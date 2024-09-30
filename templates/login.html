@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login to Habit Tracker</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"
+
+</head>
+<body>
+    <div class = "container">
+        <h1>Habit Tracker</h1>
+    </div>
+
+
+    <form method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:  </label>
+        <input type="password" id="password" name="password" required><br>
+        <br>
+        <input type="submit" value="Login">
+        <br>
+        <p>If you don't have an account yet, set one up</p>
+
+
+    </form>
+
+    
+</body>
+</html>

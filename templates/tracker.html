@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+       <title >Habit Tracker</title>
+       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Current Streak: {{ streak }} days</h2>
+
+    <form method="POST">
+
+        <label for="water_intake">Water Intake (fl oz):</label>
+        <input type="number" id="water_intake" name="water_intake" required><br>
+
+        <input type="checkbox" name="Outside" value="Outside">
+        <label for="exercise_completed">Exercise Completed:</label>
+        <input type="radio" id="yes" name="exercise_completed" value="yes" required>
+        <label for="yes">Yes</label>
+        <input type="radio" id="no" name="exercise_completed" value="no" required>
+        <label for="no">No</label><br>
+    
+
+        <div id="container" background="#B5dBff" >
+        <input type="checkbox" value="Outside">
+        <label for="exercise_completed2">Exercise Completed 2</label>
+
+        </div>
+
+        <button type="button habits" class="collapsible">  
+            <input type="checkbox" value="water">      
+            <label for="water_intake" background="">Water Intake (fl oz):</label>           
+        </button>
+        <div class="content">
+            <p>Add your water intake:</p><br>
+            <button type="button" water_amount>8 oz </button>
+            <button type="button">12 oz </button>
+            <button type="button">16 oz </button><br>
+            <label for="water_intake">Other amount:</label>
+            <input type="number" id="water_intake" name="water_intake" required><br>
+
+        </div>
+
+
+        <input type="submit" value="Save">
+
+    </form>
+</body>
+</html>
