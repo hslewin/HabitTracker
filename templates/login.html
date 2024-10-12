@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login to Habit Tracker</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Heather Lewin">
+    <meta name='description' content="Semester project for HCI5840 Fall 2024">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+    <title>Login to Habit Tracker</title>
 </head>
 <body>
     <div class = "container">
-        <h1>Habit Tracker</h1>
+        <h1>Welcome to 75 Hard Habit Tracker!</h1>
     </div>
 
 
-    <form method="POST">
+    <form method="POST" action = "/login">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br>
         <label for="password">Password:  </label>
@@ -19,9 +23,10 @@
         <br>
         <input type="submit" value="Login">
         <br>
+        {% if error%}
+            <p style = "color: red;">{{error}}</p>
+        {% endif %}
         <p>If you don't have an account yet, set one up</p>
-
-
     </form>
 
     

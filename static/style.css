@@ -1,17 +1,117 @@
 
 
+
 body {
-
+    background-color: #b5dbff;
+  }
+  
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
 }
 
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+  
 h1 {
-    background-color: #023181;
-    color: #ededed;
-}
-
-input{
+      background-color: #023181;
+      color: #ededed;
+      text-align: center;
+      padding: 20px;
+      font-size: 64px;
+    }
+  
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  input{
+      border-style: groove;
+      border: #4285F4 1px ;
+      border-radius: 2px;
+      padding: 5px
+  
+  }
+  
+  
+  form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width = 50%;
+    }
+  
+  label{
+    background-color: #f1f1f1;
+    width: 100px;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
     border-style: groove;
     border: #4285F4 1px ;
-    border-radius: 2px;
+    border-radius: 8px;
     padding: 5px
-}
+  }
+  
+  habits [open]{
+      background-color: #b5dbff;
+      border: groove;
+      border-color: #4285F4;
+      border-radius: 5px;
+  }
+  
+  flex-container > div {
+      background-color: #f1f1f1;
+      width: 100px;
+      margin: 10px;
+      text-align: center;
+      line-height: 75px;
+      font-size: 30px;
+    }
+  
+  
+  flex-container {
+      display: flex;
+      height: 600px;
+      flex-wrap: wrap;
+      align-content: stretch;
+      overflow: scroll;  
+      background-color: DodgerBlue;
+    }
+    
+    flex-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+ 
+
+    
+    /* Responsive layout - makes a one column layout instead of a two-column layout */
+    @media (max-width: 800px) {
+      .flex-item-right, .flex-item-left {
+        flex: 100%;
+      }
+    }
+  
+
