@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Heather Lewin">
+    <meta name='description' content="Semester project for HCI5840 Fall 2024">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>75 Hard Challenge Tracker</title>
+   
+   
+  </head>
+  <body>
+    <h1>75 Hard Challenge Tracker</h1>
+    
+    <div class = "row">
+      <div class ="column">
+        <form action="/tracker_Updating" method="post">
+          <label for="water_intake">
+          <input type="checkbox" name="water_intake" {% if daily_data.Water %}checked{% endif %}>
+          Water Intake</label>
+          <br>
+          
+          <label for="exercise_completed">
+          <input type="checkbox" name="exercise_completed" {% if daily_data.Exercise %}checked{% endif %}>
+          Exercise 1 Completed</label>
+          <br>
+          
+          <label for="exercise_completed2">
+          <input type="checkbox" name="exercise_completed2" {% if daily_data.Exercise2 %}checked{% endif %}>
+          Exercise 2 Completed</label>
+          <br>
+          
+          <label for="exercise_outside">
+          <input type="checkbox" name="exercise_outside" {% if daily_data.Outside %}checked{% endif %}>
+          Outside Exercise</label>
+          <br>
+          
+          <label for="diet_followed">
+          <input type="checkbox" name="diet_followed" {% if daily_data.Diet %}checked{% endif %}>
+          Diet Followed</label><br>
+          
+          <label for="read_pages">
+          <input type="checkbox" name="read_pages" {% if daily_data.Read %}checked{% endif %}>
+          Pages Read</label>
+          <br>
+          
+          <label for="picture_taken">
+          <input type="checkbox" name="picture_taken" {% if daily_data.Picture %}checked{% endif %}>
+          Picture Taken</label>
+          <br>
+          
+          <input type="submit" value="Submit">
+        </form>
+       </div>
+       <div class ="column">
+        <h2>Current Streak: {{ streak }} days</h2>
+       </div>
+      </div>
+   
+  </body>
+</html>
+
+
