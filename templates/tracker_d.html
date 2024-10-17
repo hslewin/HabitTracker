@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Heather Lewin">
+    <meta name='description' content="Semester project for HCI5840 Fall 2024">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>75 Hard Challenge Tracker</title>
+   
+   
+  </head>
+  <body>
+    <h1>75 Hard Challenge Tracker</h1>
+    
+    <div class = "row">
+      <div class ="column">
+        <form action="/tracker_Default" method="POST">
+          <label for="water_intake">
+            <input type="checkbox" id="water_intake" name="water_intake">
+            Water Intake
+          </label>
+          <br><br>
+          <label for="exercise_completed">
+            <input type="checkbox" id="exercise_completed" name="exercise_completed">
+            Exercise Completed
+          </label>
+          <br><br>
+          <label for="exercise_completed2">
+            <input type="checkbox" id="exercise_completed2" name="exercise_completed2">
+            Second Exercise Completed
+          </label>
+          <br><br>
+          <label for="exercise_outside">
+            <input type="checkbox" id="exercise_outside" name="exercise_outside">
+            Exercise Outside
+          </label>
+          <br><br>
+          <label for="diet_followed">
+            <input type="checkbox" id="diet_followed" name="diet_followed">
+            Diet Followed
+          </label>
+          <br><br>
+          <label for="read_pages">
+            <input type="checkbox" id="read_pages" name="read_pages">
+            Reading
+          </label>
+          <br><br>
+          <label for="picture_taken">
+            <input type="checkbox" id="picture_taken" name="picture_taken">
+            Progress Picture Taken
+          </label>
+          <br><br>
+          <button type="submit">Submit</button>
+        </form>
+       </div>
+       <div class ="column">
+        <h2>Current Streak: {{ streak }} days</h2>
+       </div>
+      </div>
+   
+  </body>
+</html>
+
+
+
+

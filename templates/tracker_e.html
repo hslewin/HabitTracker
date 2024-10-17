@@ -1,8 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-       <title >Habit Tracker</title>
-       <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Heather Lewin">
+    <meta name='description' content="Semester project for HCI5840 Fall 2024">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title >Habit Tracker</title>
+    
+    <script>
+    // Function to toggle between simple and complex input for each habit
+    function toggleHabitInput(habitId) {
+        const habitType = document.getElementById(habitId).value;
+        const simpleInput = document.getElementById(`${habitId}-checkbox`);
+        const complexInput = document.getElementById(`${habitId}-complex`);
+
+        if (habitType === 'simple') {
+            simpleInput.style.display = 'block';
+            complexInput.style.display = 'none';
+        } else {
+            simpleInput.style.display = 'none';
+            complexInput.style.display = 'block';
+        }
+        }
+    </script>
+
+
+
+
 </head>
 <body>
     <h2>Current Streak: {{ streak }} days</h2>
