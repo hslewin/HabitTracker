@@ -16,10 +16,14 @@
 
 
     <form method="POST" action = "/login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password:  </label>
-        <input type="password" id="password" name="password" required><br>
+        <label2 for="username">Username:
+        <input type="text" id="username" name="username" required>
+        </label2>
+        <br>
+        <label2 for="password">Password:  
+        <input type="password" id="password" name="password" required>
+         </label2>
+        <br>
         <br>
         <input type="submit" value="Login">
         <br>
@@ -27,7 +31,7 @@
             <p style = "color: red;">{{error}}</p>
         {% endif %}
         <p>If you don't have an account yet, set one up</p>
-    </form>
+        </form>
 
     
 </body>

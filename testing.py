@@ -107,8 +107,10 @@ class HabitTracker:
     def update_streak(self):
         if (self.check_streak() and self.check_all_tasks_completed(self.today)):
             self.streak += 1
-        elif self.check_all_tasks_completed(self.today):
+        elif self.check_all_tasks_completed(self.today) and self.check_streak()==False:
             self.streak = 1
+        else:
+            self.streak = 0
 
         user_login_data = self.login_data[self.login_data['username'] == self.username]
         if not user_login_data.empty:

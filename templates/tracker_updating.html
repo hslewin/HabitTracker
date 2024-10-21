@@ -16,6 +16,7 @@
     
     <div class = "row">
       <div class ="column">
+        <h2>Today's Tasks</h2>
         <form action="/tracker_Updating" method="post">
           <label for="water_intake">
           <input type="checkbox" name="water_intake" {% if daily_data.Water %}checked{% endif %}>
@@ -34,7 +35,7 @@
           
           <label for="exercise_outside">
           <input type="checkbox" name="exercise_outside" {% if daily_data.Outside %}checked{% endif %}>
-          Outside Exercise</label>
+          Exercised Outside</label>
           <br>
           
           <label for="diet_followed">
@@ -50,12 +51,29 @@
           <input type="checkbox" name="picture_taken" {% if daily_data.Picture %}checked{% endif %}>
           Picture Taken</label>
           <br>
+        
           
-          <input type="submit" value="Submit">
+          <button type="submit">Submit Today's Progress</button>
+    
         </form>
+        <br>
+        <form>
+        </form>
+
        </div>
        <div class ="column">
-        <h2>Current Streak: {{ streak }} days</h2>
+        <h2>Day {{ streak }}</h2>
+        <form>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+        </form>
+
+        <h2>Progress</h2>
+
        </div>
       </div>
    
