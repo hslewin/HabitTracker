@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 class HabitTracker:
     def __init__(self):
-        self.login_data = pd.read_csv("logins.csv")
-        self.daily_data = pd.read_csv("user_habits.csv")
+        self.login_data = pd.read_csv("logins.csv") #all logins for the application, includes username, password, streak, and streak_date
+        self.daily_data = pd.read_csv("user_habits.csv") #holding place, will be overwritten during successful login
         self.today = date.today().strftime('%Y-%m-%d')
         self.setting_default = True
         self.username=""
@@ -43,12 +43,12 @@ class HabitTracker:
                 'Diet': diet_followed,
                 'Read': read_pages,
                 'Picture': picture_taken,
-                'Done': False  
+                'streak_number': 0,  
             }
             self.daily_data = pd.concat([self.daily_data, pd.DataFrame([new_entry])], ignore_index=True)
         else:
             # Update the existing entry
-            idx = self.daily_data[self.daily_data['Date'] == self.today].index[0]
+            idx = existing_entry.index[0]
             self.daily_data.at[idx, 'Water'] = water_intake
             self.daily_data.at[idx, 'Exercise'] = exercise_completed
             self.daily_data.at[idx, 'Exercise2'] = exercise_completed2
@@ -63,58 +63,68 @@ class HabitTracker:
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
-
+        
+        
+        
     def check_all_tasks_completed(self, date_check):
         # Get today's entry
+        if self.daily_data[self.daily_data['Date'] == date_check].empty:
+            return False  # Return False if there's no entry for the given date
+
         check_entry = self.daily_data[self.daily_data['Date'] == date_check].iloc[0]
         
-        # Check if all tasks are completed (assuming 'True' or 'completed' for each task)
-        all_tasks = [
-            check_entry['Water'],
-            check_entry['Exercise'],
-            check_entry['Exercise2'],
-            check_entry['Outside'],
-            check_entry['Diet'],
-            check_entry['Read'],  
-            check_entry['Picture']
-        ]
+        # List of tasks to check
+        tasks = ['Water', 'Exercise', 'Exercise2', 'Outside', 'Diet', 'Read', 'Picture']
+
+        # Iterate through each task to see if it's completed
+        all_tasks_completed = True  # Assume all tasks are completed
+        for task in tasks:
+            if not bool(check_entry[task]):  # Convert the value to boolean
+                all_tasks_completed = False  # If any task is incomplete, set to False
+                break  # Exit the loop early if any task is incomplete
+
+        # Mark the day as completed or not
+        self.daily_data.loc[self.daily_data['Date'] == date_check, 'completed'] = all_tasks_completed
         
-        # If all are True, mark the day as completed
-        if all(all_tasks):
-            self.daily_data.loc[self.daily_data['Date'] == date_check, 'Done'] = True
-        else:
-            self.daily_data.loc[self.daily_data['Date'] == date_check, 'Done'] = False
-        
+        return all_tasks_completed
+   
         
     def check_streak(self):
         yesterday_str = (date.today() - timedelta(days=1)).strftime('%Y-%m-%d')
-        if (yesterday_str == self.streak_date) and self.check_all_tasks_completed(yesterday_str):
+        self.streak_date = self.login_data.loc[self.login_data['username'] == self.username, 'streak_date'].values[0]
+        
+        if yesterday_str == self.streak_date:
             return True
-        else:
+        elif self.streak_date == self.today:
             return False
+        else:
+            self.streak = 0
+            idx = self.login_data[self.login_data['username'] == self.username].index[0]
+            self.login_data.at[idx, 'streak'] = self.streak
+            return False
+        
 
     def update_streak(self):
-        if int(self.streak) > 0:
-            if self.check_streak() and self.check_all_tasks_completed(self.today):
-                self.streak += 1
+        if (self.check_streak() and self.check_all_tasks_completed(self.today)):
+            self.streak += 1
         elif self.check_all_tasks_completed(self.today):
             self.streak = 1
-            
-        idx = self.login_data[self.login_data['username'] == self.username].index[0]
-        self.login_data.at[idx, 'streak'] = self.streak
-        self.daily_data.at[idx, 'steak_date'] = self.today
-        self.login_data.to_csv("logins.csv", index=False)
+
+        user_login_data = self.login_data[self.login_data['username'] == self.username]
+        if not user_login_data.empty:
+            idx = user_login_data.index[0]
+            self.login_data.at[idx, 'streak'] = self.streak
+            self.login_data.at[idx, 'streak_date'] = self.today
+            self.login_data.to_csv("logins.csv", index=False)
+
+        self.daily_data.loc[self.daily_data['Date'] == self.today, 'streak_number'] = self.streak
+        self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
+
+        
 
             
             
             
-            
-            
-            
-        
-        
-        
-
         
 
 habit_tracker = HabitTracker()
@@ -123,6 +133,7 @@ habit_tracker = HabitTracker()
 def home():
     return render_template('login.html')
 
+#standard login page
 @app.route('/login', methods=["GET", "POST"])
 def login():
     error = None 
@@ -133,13 +144,15 @@ def login():
             user_daily = f"{username}_daily_data.csv"  
             habit_tracker.daily_data = pd.read_csv(user_daily)
             habit_tracker.username=username
-            habit_tracker.streak = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'streak'] 
+            habit_tracker.streak = int(habit_tracker.login_data.loc[habit_tracker.login_data['username']== habit_tracker.username, 'streak'].values[0] )
             habit_tracker.streak_date = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'streak_date']
-            return redirect(url_for('tracker_redirect'))  
+            return redirect(url_for('tracker_Updating')) #trying this instead of the redirect for simple  
         else:
             error = "Login failed. Try again. Or sign-up for an account"
     return render_template('login.html', error=error)
 
+
+#redirect page to deterime which checklist page will be displayed
 @app.route('/tracker_redirect')
 def tracker_redirect():
     if  habit_tracker.check_today_entry()==None :
@@ -148,8 +161,9 @@ def tracker_redirect():
         else:
             return render_template('tracker_e.html', daily_data=habit_tracker.daily_data, streak=habit_tracker.streak)
     else:
-        return redirect(url_for('tracker_Updating'))
+        return redirect(url_for('tracker_Updating')) 
 
+#default checklist page, no prior data that day and default layout, simple checkboxes
 @app.route('/tracker_Default', methods=['GET', 'POST'])
 def tracker_Default():
     if request.method == 'POST':
@@ -165,6 +179,7 @@ def tracker_Default():
         return redirect(url_for('tracker_redirect'))  
     return render_template('tracker_d.html', daily_data=habit_tracker.daily_data, streak=habit_tracker.streak)
 
+#updating checklist page for default layout, data pulled in from user for that date
 @app.route('/tracker_Updating', methods=['GET', 'POST'])
 def tracker_Updating():
     # Get today's entry if it exists
@@ -187,10 +202,11 @@ def tracker_Updating():
     # If today's entry exists, extract its values to pre-populate the form
     if not today_entry.empty:
         today_entry_data = today_entry.iloc[0]  # Get the first (and only) row as a dict-like object
-        return render_template('tracker_updating.html', daily_data=today_entry_data)
+        return render_template('tracker_updating.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak)
+
     
     # If no entry for today, render with empty/default form
-    return render_template('tracker_updating.html', daily_data={})
+    return render_template('tracker_updating.html', daily_data={}, streak=habit_tracker.streak)
 
 
 if __name__ == '__main__':
