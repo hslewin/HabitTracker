@@ -59,7 +59,7 @@ class HabitTracker:
         
         # Check if all tasks are completed
         self.check_all_tasks_completed(self.today)
-        self.update_streak()
+        self.update_streak_2()
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
@@ -121,6 +121,46 @@ class HabitTracker:
 
         self.daily_data.loc[self.daily_data['Date'] == self.today, 'streak_number'] = self.streak
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
+        
+    
+    def calculate_recent_streak(self):
+        # Filter rows where tasks were completed
+        completed_dates = self.daily_data[self.daily_data['completed'] == True]['Date']
+        
+        if completed_dates.empty:
+            return 0
+        
+        # Convert dates to datetime objects and sort in descending order
+        dates = pd.to_datetime(completed_dates).sort_values(ascending=False)
+        dates=dates[dates<self.today]
+        
+        streak = 0
+        
+        for i in range(1, len(dates)):
+            if dates.iloc[i-1] - dates.iloc[i] == timedelta(days=1):
+                streak += 1
+            else:
+                break
+        
+        return streak
+
+    def update_streak_2(self):    
+        current_streak=self.calculate_recent_streak()
+        print( current_streak)
+        
+        if self.check_all_tasks_completed(self.today):
+            current_streak += 1
+        
+        if current_streak >0:   
+            user_login_data = self.login_data[self.login_data['username'] == self.username]
+            if not user_login_data.empty:
+                idx = user_login_data.index[0]
+                self.login_data.at[idx, 'streak'] = current_streak
+                self.login_data.at[idx, 'streak_date'] = self.today
+                self.login_data.to_csv("logins.csv", index=False)
+
+            self.daily_data.loc[self.daily_data['Date'] == self.today, 'streak_number'] = current_streak
+            self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
 
         
 
@@ -213,3 +253,4 @@ def tracker_Updating():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

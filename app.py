@@ -63,9 +63,7 @@ class HabitTracker:
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
-        
-        
-        
+         
     def check_all_tasks_completed(self, date_check):
         # Get today's entry
         if self.daily_data[self.daily_data['Date'] == date_check].empty:
@@ -87,46 +85,48 @@ class HabitTracker:
         self.daily_data.loc[self.daily_data['Date'] == date_check, 'completed'] = all_tasks_completed
         
         return all_tasks_completed
-   
+    
+    def calculate_recent_streak(self):
+        # Filter rows where tasks were completed
+        completed_dates = self.daily_data[self.daily_data['completed'] == True]['Date']
         
-    def check_streak(self):
-        yesterday_str = (date.today() - timedelta(days=1)).strftime('%Y-%m-%d')
-        self.streak_date = self.login_data.loc[self.login_data['username'] == self.username, 'streak_date'].values[0]
+        if completed_dates.empty:
+            return 0
         
-        if yesterday_str == self.streak_date:
-            return True
-        elif self.streak_date == self.today:
-            return False
-        else:
-            self.streak = 0
-            idx = self.login_data[self.login_data['username'] == self.username].index[0]
-            self.login_data.at[idx, 'streak'] = self.streak
-            return False
+        # Convert dates to datetime objects and sort in descending order
+        dates = pd.to_datetime(completed_dates).sort_values(ascending=False)
+        dates=dates[dates<self.today]
         
-
-    def update_streak(self):
-        if (self.check_streak() and self.check_all_tasks_completed(self.today)):
-            self.streak += 1
-        elif self.check_all_tasks_completed(self.today):
-            self.streak = 1
-
-        user_login_data = self.login_data[self.login_data['username'] == self.username]
-        if not user_login_data.empty:
-            idx = user_login_data.index[0]
-            self.login_data.at[idx, 'streak'] = self.streak
-            self.login_data.at[idx, 'streak_date'] = self.today
-            self.login_data.to_csv("logins.csv", index=False)
-
-        self.daily_data.loc[self.daily_data['Date'] == self.today, 'streak_number'] = self.streak
-        self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
-
+        streak = 0
         
-
-            
-            
-            
+        for i in range(1, len(dates)):
+            if dates.iloc[i-1] - dates.iloc[i] == timedelta(days=1):
+                streak += 1
+            else:
+                break
         
+        return streak
 
+    def update_streak(self):    
+        current_streak=self.calculate_recent_streak()
+        print( current_streak)
+        
+        if self.check_all_tasks_completed(self.today):
+            current_streak += 1
+        
+        if current_streak >0:   
+            user_login_data = self.login_data[self.login_data['username'] == self.username]
+            if not user_login_data.empty:
+                idx = user_login_data.index[0]
+                self.login_data.at[idx, 'streak'] = current_streak
+                self.login_data.at[idx, 'streak_date'] = self.today
+                self.login_data.to_csv("logins.csv", index=False)
+
+            self.daily_data.loc[self.daily_data['Date'] == self.today, 'streak_number'] = current_streak
+            self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
+            self.streak=current_streak
+
+ 
 habit_tracker = HabitTracker()
 
 @app.route('/')
@@ -162,22 +162,6 @@ def tracker_redirect():
             return render_template('tracker_e.html', daily_data=habit_tracker.daily_data, streak=habit_tracker.streak)
     else:
         return redirect(url_for('tracker_Updating')) 
-
-#default checklist page, no prior data that day and default layout, simple checkboxes
-@app.route('/tracker_Default', methods=['GET', 'POST'])
-def tracker_Default():
-    if request.method == 'POST':
-        water_intake = 'water_intake' in request.form  
-        exercise_completed = 'exercise_completed' in request.form
-        exercise_completed2 = 'exercise_completed2' in request.form
-        exercise_outside = 'exercise_outside' in request.form
-        diet_followed = 'diet_followed' in request.form
-        read_pages = 'read_pages' in request.form
-        picture_taken = 'picture_taken' in request.form
-        
-        habit_tracker.track_habits(water_intake, exercise_completed, exercise_completed2, exercise_outside, diet_followed, read_pages, picture_taken)
-        return redirect(url_for('tracker_redirect'))  
-    return render_template('tracker_d.html', daily_data=habit_tracker.daily_data, streak=habit_tracker.streak)
 
 #updating checklist page for default layout, data pulled in from user for that date
 @app.route('/tracker_Updating', methods=['GET', 'POST'])
