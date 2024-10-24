@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Heather Lewin">
+    <meta name="description" content="Semester project for HCI5840 Fall 2024">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>Register for Habit Tracker</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Register for 75 Hard Habit Tracker!</h1>
+    </div>
+
+    <form method="POST" action="/register">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+        <br>
+        <label for="tracking_type">Tracking Type:</label>
+        <select id="tracking_type" name="tracking_type" required>
+            <option value="simple">Simple Checklist</option>
+            <option value="expanded">Expanded Tracking</option>
+        </select>
+        <br><br>
+        <input type="submit" value="Register">
+        <br>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </form>
+</body>
+</html>

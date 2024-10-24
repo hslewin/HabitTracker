@@ -10,7 +10,7 @@ class HabitTracker:
         self.login_data = pd.read_csv("logins.csv") #all logins for the application, includes username, password, streak, and streak_date
         self.daily_data = pd.read_csv("user_habits.csv") #holding place, will be overwritten during successful login
         self.today = date.today().strftime('%Y-%m-%d')
-        self.setting_default = True
+        self.setting_default = 'default'
         self.username=""
         self.streak=0
         self.streak_date=""
@@ -63,9 +63,8 @@ class HabitTracker:
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
-        
-        
-        
+     
+         
     def check_all_tasks_completed(self, date_check):
         # Get today's entry
         if self.daily_data[self.daily_data['Date'] == date_check].empty:
@@ -188,42 +187,72 @@ def login():
             habit_tracker.username=username
             habit_tracker.streak = int(habit_tracker.login_data.loc[habit_tracker.login_data['username']== habit_tracker.username, 'streak'].values[0] )
             habit_tracker.streak_date = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'streak_date']
-            return redirect(url_for('tracker_Updating')) #trying this instead of the redirect for simple  
+            habit_tracker.setting_default = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'tracking_type']
+            return redirect(url_for('tracker_redirect')) #trying this instead of the redirect for simple  
         else:
             error = "Login failed. Try again. Or sign-up for an account"
+   
     return render_template('login.html', error=error)
+
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        tracking_type = request.form['tracking_type']
+
+        # Check if passwords match
+        if password != confirm_password:
+            error = "Passwords do not match."
+        else:
+            # Load the logins.csv file
+            df = pd.read_csv("logins.csv")
+
+            # Check if username already exists
+            if username in df['username'].values:
+                error = "Username already exists. Please choose a different username."
+            else:                
+                # Append the new user to the DataFrame
+                new_user = pd.DataFrame({
+                    'username': [username],
+                    'password': [password],
+                    'tracking_type': [tracking_type],
+                    'streak': [0],
+                    'streak_date': ['']
+                })
+                df = pd.concat([df, new_user], ignore_index=True)
+                
+                # Save the updated DataFrame to logins.csv
+                df.to_csv("logins.csv", index=False)
+
+                # Create a daily_data.csv file for the user
+                user_daily_file = f"{username}_daily_data.csv"
+                if tracking_type=='default':
+                    daily_data_df = pd.DataFrame(columns=['Date','Water','Exercise','Exercise2','Outside','Diet','Read','Picture','completed','streak_number'])  
+                else:
+                    daily_data_df = pd.DataFrame(columns=['Date','Water','Exercise','Exercise2','Outside','Diet','Read','Picture','completed','streak_number'])  #add rest of column to the extended tracking
+                daily_data_df.to_csv(user_daily_file, index=False)
+
+                return redirect(url_for('login'))
+
+    return render_template('register.html', error=error)
 
 
 #redirect page to deterime which checklist page will be displayed
 @app.route('/tracker_redirect')
 def tracker_redirect():
-    if  habit_tracker.check_today_entry()==None :
-        if habit_tracker.setting_default:
+    if  habit_tracker.setting_default == 'default':
             return redirect(url_for('tracker_Default'))
-        else:
-            return render_template('tracker_e.html', daily_data=habit_tracker.daily_data, streak=habit_tracker.streak)
     else:
-        return redirect(url_for('tracker_Updating')) 
+        return redirect(url_for('tracker_Extended')) 
 
-#default checklist page, no prior data that day and default layout, simple checkboxes
-@app.route('/tracker_Default', methods=['GET', 'POST'])
-def tracker_Default():
-    if request.method == 'POST':
-        water_intake = 'water_intake' in request.form  
-        exercise_completed = 'exercise_completed' in request.form
-        exercise_completed2 = 'exercise_completed2' in request.form
-        exercise_outside = 'exercise_outside' in request.form
-        diet_followed = 'diet_followed' in request.form
-        read_pages = 'read_pages' in request.form
-        picture_taken = 'picture_taken' in request.form
-        
-        habit_tracker.track_habits(water_intake, exercise_completed, exercise_completed2, exercise_outside, diet_followed, read_pages, picture_taken)
-        return redirect(url_for('tracker_redirect'))  
-    return render_template('tracker_d.html', daily_data=habit_tracker.daily_data, streak=habit_tracker.streak)
 
 #updating checklist page for default layout, data pulled in from user for that date
-@app.route('/tracker_Updating', methods=['GET', 'POST'])
-def tracker_Updating():
+@app.route('/tracker_Default', methods=['GET', 'POST'])
+def tracker_Default():
     # Get today's entry if it exists
     today_entry = habit_tracker.daily_data[habit_tracker.daily_data['Date'] == habit_tracker.today]
     
@@ -244,11 +273,11 @@ def tracker_Updating():
     # If today's entry exists, extract its values to pre-populate the form
     if not today_entry.empty:
         today_entry_data = today_entry.iloc[0]  # Get the first (and only) row as a dict-like object
-        return render_template('tracker_updating.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak)
+        return render_template('tracker_default.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak)
 
     
     # If no entry for today, render with empty/default form
-    return render_template('tracker_updating.html', daily_data={}, streak=habit_tracker.streak)
+    return render_template('tracker_default.html', daily_data={}, streak=habit_tracker.streak)
 
 
 if __name__ == '__main__':

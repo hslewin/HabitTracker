@@ -30,7 +30,7 @@
         {% if error%}
             <p style = "color: red;">{{error}}</p>
         {% endif %}
-        <p>If you don't have an account yet, set one up</p>
+        <p>If you don't have an account yet, <a href="{{ url_for('register') }}">set one up</a></p>
         </form>
 
     
