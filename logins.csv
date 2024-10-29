@@ -1,3 +1,4 @@
-username,password,streak,streak_date,tracking_type
-test1,test1,21,2024-10-22,default
-test2,test2,0,2024-10-21,extended
+username,password,streak,streak_date,default_tracking
+test1,test1,21,2024-10-22,True,
+test2,test2,0,,False
+test3,test3,0,,False

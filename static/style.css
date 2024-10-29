@@ -103,6 +103,17 @@ button {
       line-height: 36px;
     }
 
+
+.btn-add{
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  line-height: 20px;
+  padding:5px;
+  display:30%;
+}
+
   input {
       padding: 10px;
       margin:5px;

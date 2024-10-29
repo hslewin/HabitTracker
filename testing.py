@@ -10,7 +10,7 @@ class HabitTracker:
         self.login_data = pd.read_csv("logins.csv") #all logins for the application, includes username, password, streak, and streak_date
         self.daily_data = pd.read_csv("user_habits.csv") #holding place, will be overwritten during successful login
         self.today = date.today().strftime('%Y-%m-%d')
-        self.setting_default = 'default'
+        self.setting_default = True
         self.username=""
         self.streak=0
         self.streak_date=""
@@ -63,8 +63,7 @@ class HabitTracker:
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
-     
-         
+             
     def check_all_tasks_completed(self, date_check):
         # Get today's entry
         if self.daily_data[self.daily_data['Date'] == date_check].empty:
@@ -86,8 +85,7 @@ class HabitTracker:
         self.daily_data.loc[self.daily_data['Date'] == date_check, 'completed'] = all_tasks_completed
         
         return all_tasks_completed
-   
-        
+     
     def check_streak(self):
         yesterday_str = (date.today() - timedelta(days=1)).strftime('%Y-%m-%d')
         self.streak_date = self.login_data.loc[self.login_data['username'] == self.username, 'streak_date'].values[0]
@@ -102,7 +100,6 @@ class HabitTracker:
             self.login_data.at[idx, 'streak'] = self.streak
             return False
         
-
     def update_streak(self):
         if (self.check_streak() and self.check_all_tasks_completed(self.today)):
             self.streak += 1
@@ -121,7 +118,6 @@ class HabitTracker:
         self.daily_data.loc[self.daily_data['Date'] == self.today, 'streak_number'] = self.streak
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
         
-    
     def calculate_recent_streak(self):
         # Filter rows where tasks were completed
         completed_dates = self.daily_data[self.daily_data['completed'] == True]['Date']
@@ -186,14 +182,13 @@ def login():
             habit_tracker.daily_data = pd.read_csv(user_daily)
             habit_tracker.username=username
             habit_tracker.streak = int(habit_tracker.login_data.loc[habit_tracker.login_data['username']== habit_tracker.username, 'streak'].values[0] )
-            habit_tracker.streak_date = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'streak_date']
-            habit_tracker.setting_default = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'tracking_type']
+            habit_tracker.streak_date = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'streak_date'].values[0]
+            habit_tracker.setting_default = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'default_tracking'].values[0]
             return redirect(url_for('tracker_redirect')) #trying this instead of the redirect for simple  
         else:
             error = "Login failed. Try again. Or sign-up for an account"
    
     return render_template('login.html', error=error)
-
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -202,7 +197,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        tracking_type = request.form['tracking_type']
+        default_tracking = request.form['default_tracking']
 
         # Check if passwords match
         if password != confirm_password:
@@ -219,18 +214,21 @@ def register():
                 new_user = pd.DataFrame({
                     'username': [username],
                     'password': [password],
-                    'tracking_type': [tracking_type],
+                    'default_tracking': [default_tracking],
                     'streak': [0],
                     'streak_date': ['']
                 })
                 df = pd.concat([df, new_user], ignore_index=True)
                 
+                
                 # Save the updated DataFrame to logins.csv
                 df.to_csv("logins.csv", index=False)
+                #update loging data in tracker to match
+                habit_tracker.login_data=pd.read_csv("logins.csv")
 
                 # Create a daily_data.csv file for the user
                 user_daily_file = f"{username}_daily_data.csv"
-                if tracking_type=='default':
+                if default_tracking==True:
                     daily_data_df = pd.DataFrame(columns=['Date','Water','Exercise','Exercise2','Outside','Diet','Read','Picture','completed','streak_number'])  
                 else:
                     daily_data_df = pd.DataFrame(columns=['Date','Water','Exercise','Exercise2','Outside','Diet','Read','Picture','completed','streak_number'])  #add rest of column to the extended tracking
@@ -244,10 +242,10 @@ def register():
 #redirect page to deterime which checklist page will be displayed
 @app.route('/tracker_redirect')
 def tracker_redirect():
-    if  habit_tracker.setting_default == 'default':
+    if  habit_tracker.setting_default == True:
             return redirect(url_for('tracker_Default'))
     else:
-        return redirect(url_for('tracker_Extended')) 
+        return redirect(url_for('tracker_testing')) 
 
 
 #updating checklist page for default layout, data pulled in from user for that date
@@ -278,6 +276,35 @@ def tracker_Default():
     
     # If no entry for today, render with empty/default form
     return render_template('tracker_default.html', daily_data={}, streak=habit_tracker.streak)
+
+
+@app.route('/tracker_testing', methods=['GET', 'POST'])
+def tracker_testing():
+        # Get today's entry if it exists
+    today_entry = habit_tracker.daily_data[habit_tracker.daily_data['Date'] == habit_tracker.today]
+    
+    if request.method == 'POST':
+        # Handle form submission
+        water_intake = 'water_intake' in request.form  
+        exercise_completed = 'exercise_completed' in request.form
+        exercise_completed2 = 'exercise_completed2' in request.form
+        exercise_outside = 'exercise_outside' in request.form
+        diet_followed = 'diet_followed' in request.form
+        read_pages = 'read_pages' in request.form
+        picture_taken = 'picture_taken' in request.form
+        
+        # Update the habits in the CSV
+        habit_tracker.track_habits(water_intake, exercise_completed, exercise_completed2, exercise_outside, diet_followed, read_pages, picture_taken)
+        return redirect(url_for('tracker_redirect'))
+    
+    # If today's entry exists, extract its values to pre-populate the form
+    if not today_entry.empty:
+        today_entry_data = today_entry.iloc[0]  # Get the first (and only) row as a dict-like object
+        return render_template('tracker_testing.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak)
+
+    
+    # If no entry for today, render with empty/default form
+    return render_template('tracker_testing.html', daily_data={}, streak=habit_tracker.streak)
 
 
 if __name__ == '__main__':
