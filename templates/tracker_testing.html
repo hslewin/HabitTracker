@@ -31,69 +31,63 @@
           <label for="water_intake">
             <button type="button_extended" onclick="toggleInfo('water_info')">Drink at least 1 gallon of water. </button>
           </label>
-          
           <div id="water_info" class="info">
-            <label>Add your water intake:</label><br>
+            <label>Add your water intake: Now at {{water_oz}}</label><br>
                 <button type="button" class ="btn btn-add" onclick="addWater(8)">Add 8 oz</button>
                 <button type="button" class ="btn btn-add" onclick="addWater(16)">Add 16 oz</button>
                 <button type="button" class ="btn btn-add" onclick="addWater(32)">Add 32 oz</button>
           <label for="water_intake">Other amount:<input type="number" id="water_intake" name="water_intake"></label>
-          <br>
           </div>
-  
-
-
-
-
-
           <br>
-          
+
           <label for="exercise_completed">
-            <input type="checkbox" name="exercise_completed" id="exercise_completed" {% if daily_data.Exercise %}checked{% endif %}>
-            Exercise 1 Completed
+            <button type="button_extended" onclick="toggleInfo('e1_info')">Exercise 45 Minutes One -- outside. </button>
           </label>
-          <button type="button" onclick="toggleInfo('exercise1_info')">Info</button>
-          <div id="exercise1_info" class="info">Complete a 45-minute workout.</div>
+          <div id="e1_info" class="info">
+            <label>Add your exercise time and type:</label><br>
+            <label for="e1_time">Time:<input type="number" id="e1_time" name="e1_time"></label>
+            <label for="e1_type">Type:<input type="text" id="e1_type" name="e1_type"></label>
+
+            <label for="exercise_outside">
+              <input type="checkbox" name="exercise_outside" id="exercise_outside" {% if daily_data.Outside %}checked{% endif %}>
+              Exercised Outside
+            </label>
+          </div>
           <br>
-          
+
           <label for="exercise_completed2">
-            <input type="checkbox" name="exercise_completed2" id="exercise_completed2" {% if daily_data.Exercise2 %}checked{% endif %}>
-            Exercise 2 Completed
+            <button type="button_extended" onclick="toggleInfo('e2_info')">Exercise 45 Minutes Two. </button>
           </label>
-          <button type="button" onclick="toggleInfo('exercise2_info')">Info</button>
-          <div id="exercise2_info" class="info">Complete a second 45-minute workout.</div>
+          <div id="e2_info" class="info">
+            <label>Add your exercise time and type:</label><br>
+            <label for="e2_time">Time:<input type="number" id="e2_time" name="e2_time"></label>
+            <label for="e2_type">Type:<input type="text" id="e2_type" name="e2_type"></label>
+          </div>
           <br>
-          
-          <label for="exercise_outside">
-            <input type="checkbox" name="exercise_outside" id="exercise_outside" {% if daily_data.Outside %}checked{% endif %}>
-            Exercised Outside
-          </label>
-          <button type="button" onclick="toggleInfo('outside_info')">Info</button>
-          <div id="outside_info" class="info">One of your workouts must be outdoors.</div>
-          <br>
-          
+      
           <label for="diet_followed">
             <input type="checkbox" name="diet_followed" id="diet_followed" {% if daily_data.Diet %}checked{% endif %}>
             Diet Followed
           </label>
-          <button type="button" onclick="toggleInfo('diet_info')">Info</button>
-          <div id="diet_info" class="info">Stick to your chosen diet plan.</div>
+          <button type="button" onclick="toggleInfo('diet_info')">Diet</button>
+          <div id="diet_info" class="info">
+          <label for="calories">Calories:<input type="number" id="caloreis" name="calories"></label>
+          </div>
           <br>
           
           <label for="read_pages">
-            <input type="checkbox" name="read_pages" id="read_pages" {% if daily_data.Read %}checked{% endif %}>
-            Pages Read
+            <button type="button_extended" onclick="toggleInfo('read_info')">Read at least 10 pages. </button>
           </label>
-          <button type="button" onclick="toggleInfo('read_info')">Info</button>
-          <div id="read_info" class="info">Read at least 10 pages of a non-fiction book.</div>
+          <div id="read_info" class="info">
+            <label for="pages">Number of pages:<input type="number" id="pages" name="pages"></label>
+            <label for="title">Title:<input type="text" id="title" name="title"></label>
+          </div>
           <br>
-          
+     
           <label for="picture_taken">
             <input type="checkbox" name="picture_taken" id="picture_taken" {% if daily_data.Picture %}checked{% endif %}>
             Picture Taken
           </label>
-          <button type="button" onclick="toggleInfo('picture_info')">Info</button>
-          <div id="picture_info" class="info">Take a progress picture.</div>
           <br>
           
           <button type="submit">Submit Today's Progress</button>

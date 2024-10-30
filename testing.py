@@ -14,6 +14,7 @@ class HabitTracker:
         self.username=""
         self.streak=0
         self.streak_date=""
+        self.water_oz=0
     
     #method to check in username and password match
     def checkLogin(self, username, password):
@@ -31,7 +32,7 @@ class HabitTracker:
     def track_habits(self, water_intake, exercise_completed, exercise_completed2, exercise_outside, diet_followed, read_pages, picture_taken):
         # Check if there's already an entry for today
         existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
-
+        
         if existing_entry.empty:
             # Create a new entry for today if it doesn't exist
             new_entry = {
@@ -56,10 +57,63 @@ class HabitTracker:
             self.daily_data.at[idx, 'Diet'] = diet_followed
             self.daily_data.at[idx, 'Read'] = read_pages
             self.daily_data.at[idx, 'Picture'] = picture_taken
+
+        # Check if all tasks are completed
+        self.check_all_tasks_completed(self.today)
+        self.update_streak_2()
+
+        # Save updated data to CSV
+        self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
+        
+    def track_habits_extended(self, water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, exercise_outside, diet_followed, calories, read_pages, pages, title, picture_taken):
+        # Check if there's already an entry for today
+        existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
+        
+        if existing_entry.empty:
+            # Create a new entry for today if it doesn't exist
+            new_entry = {
+                'Date': self.today,
+                'Water': water_intake,
+                'Water_Oz': water_oz,
+                'Exercise': exercise_completed,
+                'E1_Time': e1_time,
+                'E1_Type': e1_type,
+                'Exercise2': exercise_completed2,
+                'E2_Time': e2_time,
+                'E2_Type': e2_type,
+                'Outside': exercise_outside,
+                'Diet': diet_followed,
+                'Calories': calories,
+                'Read': read_pages,
+                'Pages': pages,
+                'Title': title,
+                'Picture': picture_taken,
+                'streak_number': 0,  
+            }
+            self.daily_data = pd.concat([self.daily_data, pd.DataFrame([new_entry])], ignore_index=True)
+        else:
+            # Update the existing entry
+            idx = existing_entry.index[0]
+            self.daily_data.at[idx, 'Water'] = water_intake
+            self.daily_data.at[idx,'Water_Oz']= water_oz
+            self.daily_data.at[idx, 'Exercise'] = exercise_completed
+            self.daily_data.at[idx, 'E1_Time'] = e1_time
+            self.daily_data.at[idx, 'E1_Type'] = e1_type
+            self.daily_data.at[idx, 'Exercise2'] = exercise_completed2
+            self.daily_data.at[idx, 'E2_Time'] = e2_time
+            self.daily_data.at[idx, 'E2_Type'] = e2_type
+            self.daily_data.at[idx, 'Outside'] = exercise_outside
+            self.daily_data.at[idx, 'Diet'] = diet_followed
+            self.daily_data.at[idx,'Calories'] = calories
+            self.daily_data.at[idx, 'Read',] = read_pages
+            self.daily_data.at[idx, 'Pages'] =  pages
+            self.daily_data.at[idx, 'Title'] = title
+            self.daily_data.at[idx, 'Picture'] = picture_taken
         
         # Check if all tasks are completed
         self.check_all_tasks_completed(self.today)
         self.update_streak_2()
+        self.water_oz=water_oz
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
@@ -285,26 +339,35 @@ def tracker_testing():
     
     if request.method == 'POST':
         # Handle form submission
-        water_intake = 'water_intake' in request.form  
+        water_intake = 'water_intake' in request.form 
+        water_oz = 'Water_Oz' in request.form 
         exercise_completed = 'exercise_completed' in request.form
+        e1_time = 'E1_Time' in request.form
+        e1_type = 'E1_Type' in request.form
         exercise_completed2 = 'exercise_completed2' in request.form
+        e2_time = 'E2_Time' in request.form
+        e2_type = 'E2_Type' in request.form
         exercise_outside = 'exercise_outside' in request.form
         diet_followed = 'diet_followed' in request.form
+        calories = 'Calories' in request.form
         read_pages = 'read_pages' in request.form
+        title = 'Title' in request.form
+        pages = 'Pages' in request.form
         picture_taken = 'picture_taken' in request.form
-        
+
+
         # Update the habits in the CSV
-        habit_tracker.track_habits(water_intake, exercise_completed, exercise_completed2, exercise_outside, diet_followed, read_pages, picture_taken)
+        habit_tracker.track_habits_extended(self, water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, exercise_outside, diet_followed, calories, read_pages, pages, title, picture_taken)
         return redirect(url_for('tracker_redirect'))
     
     # If today's entry exists, extract its values to pre-populate the form
     if not today_entry.empty:
-        today_entry_data = today_entry.iloc[0]  # Get the first (and only) row as a dict-like object
-        return render_template('tracker_testing.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak)
+        today_entry_data = today_entry.iloc[0]  # Get the first row as a dict-like object
+        return render_template('tracker_testing.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak,water=habit_tracker.water_oz )
 
     
     # If no entry for today, render with empty/default form
-    return render_template('tracker_testing.html', daily_data={}, streak=habit_tracker.streak)
+    return render_template('tracker_testing.html', daily_data={}, streak=habit_tracker.streak, water=habit_tracker.water_oz)
 
 
 if __name__ == '__main__':
