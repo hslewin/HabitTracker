@@ -16,18 +16,22 @@
 
 
     <form method="POST" action = "/login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password:  </label>
-        <input type="password" id="password" name="password" required><br>
+        <label for="username">Username:
+        <input type="text" id="username" name="username" required>
+        </label>
+        <br>
+        <label for="password">Password:  
+        <input type="password" id="password" name="password" required>
+         </label>
+        <br>
         <br>
         <input type="submit" value="Login">
         <br>
         {% if error%}
             <p style = "color: red;">{{error}}</p>
         {% endif %}
-        <p>If you don't have an account yet, set one up</p>
-    </form>
+        <p>If you don't have an account yet, <a href="{{ url_for('register') }}">set one up</a></p>
+        </form>
 
     
 </body>
