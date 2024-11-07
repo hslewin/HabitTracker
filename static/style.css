@@ -1,6 +1,25 @@
 
 
 
+h1 {
+  background-color: #023181;
+  color: #ededed;
+  text-align: center;
+  padding: 5px;
+  font-size: 40px;
+}
+
+h2 {
+  background-color: #023181;
+  color: #ededed;
+  text-align: center;
+  padding: 10px;
+  font-size: 24px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  width: 75%
+}
+
 body {
     background-color: #b5dbff;
   }
@@ -18,95 +37,114 @@ body {
 .column {
   flex: 50%;
 }
-  
-h1 {
-      background-color: #023181;
-      color: #ededed;
-      text-align: center;
-      padding: 20px;
-      font-size: 64px;
-    }
-  
-  input[type="checkbox"] {
-    margin-right: 10px;
-  }
-  
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  input{
-      border-style: groove;
-      border: #4285F4 1px ;
-      border-radius: 2px;
-      padding: 5px
-  
-  }
-  
-  
-  form {
+.info{
+
+  display:none;
+}
+
+form {
     background: #fff;
-    padding: 20px;
+    padding: 5px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width = 50%;
+    width: 75%;
+    display: block;
     }
   
-  label{
-    background-color: #f1f1f1;
-    width: 100px;
-    margin: 10px;
-    text-align: center;
-    line-height: 75px;
-    font-size: 30px;
-    border-style: groove;
-    border: #4285F4 1px ;
-    border-radius: 8px;
-    padding: 5px
-  }
-  
-  habits [open]{
-      background-color: #b5dbff;
-      border: groove;
-      border-color: #4285F4;
-      border-radius: 5px;
-  }
-  
-  flex-container > div {
+label{
       background-color: #f1f1f1;
-      width: 100px;
-      margin: 10px;
-      text-align: center;
-      line-height: 75px;
-      font-size: 30px;
+      margin: 5px;
+      text-align: left;
+      line-height: 36px;
+      font-size: 24px;
+      border-style: groove;
+      border: #4285F4 1px ;
+      border-radius: 8px;
+      padding: 5px;
+      display: block;
+      border-style: groove;
     }
   
+label{
+      background-color: #f1f1f1;
   
-  flex-container {
-      display: flex;
-      height: 600px;
-      flex-wrap: wrap;
-      align-content: stretch;
-      overflow: scroll;  
-      background-color: DodgerBlue;
+      margin: 5px;
+      text-align: left;
+      line-height: 36px;
+      font-size: 24px;
+      border-style: groove;
+      border: #4285F4 1px ;
+      border-radius: 8px;
+      padding: 5px;
+      border-style: groove;
+      display:block;
+    }
+form {
+  background: #fff;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: max-content;
+  display: block;
+  }
+
+
+
+input[type="checkbox"] {
+      margin-right: 10px;
     }
     
-    flex-container {
-      display: flex;
-      flex-wrap: wrap;
+button {
+      display: block;
+      width:100%;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 25px;
+      cursor: pointer;
+      text-align: left;
+      line-height: 36px;
     }
-    
- 
+
+
+.btn-add{
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  line-height: 20px;
+  padding:5px;
+  display:30%;
+}
+
+  input {
+      padding: 10px;
+      margin:5px;
+      background: #dadada;
+      color: #0b0b0b;
+      border: #4a4a4a 1px ;
+      border-radius: 5px;
+      font-size: 24px;
+      border-style: groove;
+      }
+
+  
+input [type="submit"]{
+  padding: 10px;
+  margin:5px;
+  background: #007BFF;
+  color: #fff;
+  border: #4285F4 1px ;
+  border-radius: 5px;
+  font-size: 24px;
+  border-style: groove;
+  }
+
 
     
+ 
+  
     /* Responsive layout - makes a one column layout instead of a two-column layout */
     @media (max-width: 800px) {
       .flex-item-right, .flex-item-left {
@@ -114,4 +152,6 @@ h1 {
       }
     }
   
+
+
 
