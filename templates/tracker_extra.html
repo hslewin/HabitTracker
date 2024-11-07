@@ -17,6 +17,11 @@
             info.style.display = 'none';
           }
         }
+        let water_oz = {{water_oz}}
+        function addWater(amount) {
+          water_oz += amount;
+          document.getElementById('water_display').innerText = water_oz;
+        }
       </script>
 
   </head>
@@ -26,22 +31,22 @@
     <div class="row">
       <div class="column">
         <h2>Today's Tasks</h2>
-        <form action="/tracker_testing" method="post">
+        <form action="/tracker_extra" method="post">
             
           <label for="water_intake">
-            <button type="button_extended" onclick="toggleInfo('water_info')">Drink at least 1 gallon of water. </button>
+            <button type="button" onclick="toggleInfo('water_info')">Drink at least 1 gallon of water. </button>
           </label>
           <div id="water_info" class="info">
-            <label>Add your water intake: Now at {{water_oz}}</label><br>
+            <label>Water intake so far: <span id="water_display">{{ water_oz }}</span> oz</label><br>
                 <button type="button" class ="btn btn-add" onclick="addWater(8)">Add 8 oz</button>
                 <button type="button" class ="btn btn-add" onclick="addWater(16)">Add 16 oz</button>
-                <button type="button" class ="btn btn-add" onclick="addWater(32)">Add 32 oz</button>
+                <button type="button" class ="btn btn-add" onclick="addWater(24)">Add 24 oz</button>
           <label for="water_intake">Other amount:<input type="number" id="water_intake" name="water_intake"></label>
           </div>
           <br>
 
           <label for="exercise_completed">
-            <button type="button_extended" onclick="toggleInfo('e1_info')">Exercise 45 Minutes One -- outside. </button>
+            <button type="button" onclick="toggleInfo('e1_info')">Exercise 45 Minutes One -- outside. </button>
           </label>
           <div id="e1_info" class="info">
             <label>Add your exercise time and type:</label><br>
@@ -56,7 +61,7 @@
           <br>
 
           <label for="exercise_completed2">
-            <button type="button_extended" onclick="toggleInfo('e2_info')">Exercise 45 Minutes Two. </button>
+            <button type="button" onclick="toggleInfo('e2_info')">Exercise 45 Minutes Two. </button>
           </label>
           <div id="e2_info" class="info">
             <label>Add your exercise time and type:</label><br>
@@ -71,12 +76,12 @@
           </label>
           <button type="button" onclick="toggleInfo('diet_info')">Diet</button>
           <div id="diet_info" class="info">
-          <label for="calories">Calories:<input type="number" id="caloreis" name="calories"></label>
+          <label for="calories">Calories:<input type="number" id="calories" name="calories"></label>
           </div>
           <br>
           
           <label for="read_pages">
-            <button type="button_extended" onclick="toggleInfo('read_info')">Read at least 10 pages. </button>
+            <button type="button" onclick="toggleInfo('read_info')">Read at least 10 pages. </button>
           </label>
           <div id="read_info" class="info">
             <label for="pages">Number of pages:<input type="number" id="pages" name="pages"></label>

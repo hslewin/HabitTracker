@@ -37,6 +37,10 @@ body {
 .column {
   flex: 50%;
 }
+.info{
+
+  display:none;
+}
 
 form {
     background: #fff;
@@ -61,7 +65,7 @@ label{
       border-style: groove;
     }
   
-label2{
+label{
       background-color: #f1f1f1;
   
       margin: 5px;
@@ -75,7 +79,7 @@ label2{
       border-style: groove;
       display:block;
     }
-formL {
+form {
   background: #fff;
   padding: 5px;
   border-radius: 8px;
