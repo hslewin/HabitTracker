@@ -29,7 +29,7 @@ class HabitTracker:
             print("No entry for today.")
             return None
 
-    def track_habits(self, water_intake, exercise_completed, exercise_completed2, exercise_outside, diet_followed, read_pages, picture_taken):
+    def track_habits(self, water_intake=False, exercise_completed=False, exercise_completed2=False, exercise_outside=False, diet_followed=False, read_pages=False, picture_taken=False):
         # Check if there's already an entry for today
         existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
         
@@ -65,7 +65,13 @@ class HabitTracker:
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
         
-    def track_habits_extended(self, water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, exercise_outside, diet_followed, calories, read_pages, pages, title, picture_taken):
+    def track_habits_extended(self, 
+                          water_intake=0, water_oz=0, 
+                          exercise_completed=False, e1_time=0, e1_type='', 
+                          exercise_completed2=False, e2_time=0, e2_type='', 
+                          exercise_outside=False, diet_followed=False, 
+                          calories=0, read_pages=0, pages=0, 
+                          title='', picture_taken=False):
         # Check if there's already an entry for today
         existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
         
@@ -361,16 +367,16 @@ def tracker_extra():
 
         # Update the habits in the CSV
         habit_tracker.track_habits_extended(water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, exercise_outside, diet_followed, calories, read_pages, pages, title, picture_taken)
-        return redirect(url_for('tracker_redirect'))
+        return render_template('tracker_extra.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak,water_num=habit_tracker.water_oz )
     
     # If today's entry exists, extract its values to pre-populate the form
     if not today_entry.empty:
         today_entry_data = today_entry.iloc[0]  # Get the first row as a dict-like object
-        return render_template('tracker_extra.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak,water=habit_tracker.water_oz )
+        return render_template('tracker_extra.html', daily_data=today_entry_data.to_dict(), streak=habit_tracker.streak,water_num=habit_tracker.water_oz )
 
     
     # If no entry for today, render with empty/default form
-    return render_template('tracker_extra.html', daily_data={}, streak=habit_tracker.streak, water=habit_tracker.water_oz)
+    return render_template('tracker_extra.html', daily_data={}, streak=habit_tracker.streak, water_num=habit_tracker.water_oz)
 
 
 if __name__ == '__main__':

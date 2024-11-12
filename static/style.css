@@ -64,35 +64,8 @@ label{
       display: block;
       border-style: groove;
     }
-  
-label{
-      background-color: #f1f1f1;
-  
-      margin: 5px;
-      text-align: left;
-      line-height: 36px;
-      font-size: 24px;
-      border-style: groove;
-      border: #4285F4 1px ;
-      border-radius: 8px;
-      padding: 5px;
-      border-style: groove;
-      display:block;
-    }
-form {
-  background: #fff;
-  padding: 5px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: max-content;
-  display: block;
-  }
 
 
-
-input[type="checkbox"] {
-      margin-right: 10px;
-    }
     
 button {
       display: block;
@@ -107,16 +80,21 @@ button {
       line-height: 36px;
     }
 
-
-.btn-add{
-  border-radius: 5px;
-  font-size: 12px;
-  cursor: pointer;
-  text-align: left;
-  line-height: 20px;
-  padding:5px;
-  display:30%;
+.btn-group{
+  display: flex;
+  gap: 10px;
 }
+
+.btn-add {
+  padding: 8px 12px; 
+  background: #373737;
+  color: #fff;       
+  font-size: 14px;          
+  cursor: pointer;
+}
+
+
+
 
   input {
       padding: 10px;
@@ -128,7 +106,10 @@ button {
       font-size: 24px;
       border-style: groove;
       }
-
+  
+  input[type="checkbox"] {
+        margin-right: 10px;
+      }
   
 input [type="submit"]{
   padding: 10px;
