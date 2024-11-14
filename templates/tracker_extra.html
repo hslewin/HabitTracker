@@ -11,14 +11,19 @@
     <script>
         
 
-        function toggleInfo(infoId) {
-          var info = document.getElementById(infoId);
-          if (info.style.display === 'none' || info.style.display === '') {
-            info.style.display = 'block';
-          } else {
-            info.style.display = 'none';
-          }
+      function toggleArrowAndInfo(infoId) {
+        const info = document.getElementById(infoId);
+        const arrowIcon = document.getElementById("arrowIcon");
+        
+        // Toggle display of the info section
+        if (info.style.display === 'none' || info.style.display === '') {
+            info.style.display = 'block';   // Show content
+            arrowIcon.textContent = "▼";    // Change to down arrow
+        } else {
+            info.style.display = 'none';    // Hide content
+            arrowIcon.textContent = "▲";    // Change to up arrow
         }
+    }
         
         let water_num = {{water_num}}
 
@@ -27,6 +32,7 @@
           document.getElementById('water_display').innerText = water_num;
         }
         
+    
         
       </script>
 
@@ -41,7 +47,10 @@
             
           <label>
           <div id = "water_label" class = "btn-group"> 
-            <input type="checkbox" name="water_intake" id="water_intake" {% if daily_data.water %}checked{% endif %}><button type="button" onclick="toggleInfo('water_info')">Drink at least 1 gallon of water. </button>
+            <input type="checkbox" name="water_intake" id="water_intake" {% if daily_data.water %}checked{% endif %}>
+            <button type="button" id="toggle_button" onclick="toggleArrowAndInfo('water_info')">
+              <span id="arrowIcon">▲</span>Drink at least 1 gallon of water.
+          </button>
           </div>
         </label>
           <div id="water_info" class="info">

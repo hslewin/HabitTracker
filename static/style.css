@@ -1,12 +1,25 @@
+/* General reset for margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+/* Body styling */
+body {
+  background-color: #b5dbff;
+  font-family: Arial, sans-serif;
+  padding: 20px; /* Space around content */
+}
 
-
+/* Styling for the header */
 h1 {
   background-color: #023181;
   color: #ededed;
   text-align: center;
-  padding: 5px;
+  padding: 10px;
   font-size: 40px;
+  width: 100%;
 }
 
 h2 {
@@ -17,122 +30,143 @@ h2 {
   font-size: 24px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  width: 75%
+  width: 75%;
+  margin: 0 auto; /* Centers the heading */
 }
 
-body {
-    background-color: #b5dbff;
-  }
-  
+/* Flex container for main content */
 .container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 75%; /* Restricting container width to match heading width */
+  margin: 0 auto; /* Centers the container */
 }
 
+/* Row styling for two columns */
 .row {
   display: flex;
+  gap: 20px; /* Space between columns */
 }
 
+/* Column styles */
 .column {
   flex: 50%;
-}
-.info{
-
-  display:none;
+  padding: 10px;
 }
 
-form {
-    background: #fff;
-    padding: 5px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 75%;
-    display: block;
-    }
-  
-label{
-      background-color: #f1f1f1;
-      margin: 5px;
-      text-align: left;
-      line-height: 36px;
-      font-size: 24px;
-      border-style: groove;
-      border: #4285F4 1px ;
-      border-radius: 8px;
-      padding: 5px;
-      display: block;
-      border-style: groove;
-    }
+/* Grid container for the 75 days */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr); /* 15 columns for 75 items */
+  gap: 4px; /* Reduced gap for compactness */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 75%; /* Ensure grid stays within container width */
+  margin-left: auto; /* Center grid container */
+  margin-right: auto; /* Center grid container */
+}
 
-
-    
-button {
-      display: block;
-      width:100%;
-      background: #007BFF;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-size: 25px;
-      cursor: pointer;
-      text-align: left;
-      line-height: 36px;
-    }
-
-.btn-group{
+/* Each grid item (day cell) */
+.grid-item {
   display: flex;
-  gap: 10px;
-}
-
-.btn-add {
-  padding: 8px 12px; 
-  background: #373737;
-  color: #fff;       
-  font-size: 14px;          
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-
-
-
-  input {
-      padding: 10px;
-      margin:5px;
-      background: #dadada;
-      color: #0b0b0b;
-      border: #4a4a4a 1px ;
-      border-radius: 5px;
-      font-size: 24px;
-      border-style: groove;
-      }
-  
-  input[type="checkbox"] {
-        margin-right: 10px;
-      }
-  
-input [type="submit"]{
-  padding: 10px;
-  margin:5px;
-  background: #007BFF;
+/* Completed day styling */
+.grid-item.completed {
+  background-color: #007BFF;
   color: #fff;
-  border: #4285F4 1px ;
-  border-radius: 5px;
+  border: 2px solid #2d2d2d;
+}
+
+/* Incomplete day styling */
+.grid-item.incomplete {
+  background-color: rgb(177, 177, 177);
+}
+
+/* Form styling */
+form {
+  background: #fff;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 75%; 
+  margin-left: auto; /* Center grid container */
+  margin-right: auto; /* Center grid container */
+  display: block;
+  margin-top: 20px; /* Adds space between form and previous content */
+}
+
+label {
+  background-color: #f1f1f1;
+  margin: 5px;
+  text-align: left;
+  line-height: 36px;
   font-size: 24px;
   border-style: groove;
+  border: #4285F4 1px;
+  border-radius: 8px;
+  padding: 5px;
+  display: block;
+}
+
+button {
+  display: block;
+  width: 100%;
+  background: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 25px;
+  cursor: pointer;
+  text-align: left;
+  line-height: 36px;
+  margin-top: 10px; /* Adds space between the button and the form fields */
+}
+
+/* Progress Bar Container */
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 60px;
+  background-color: #ddd;
+  border-radius: 5px;
+  padding: 0px;
+}
+
+/* Each Progress Segment */
+.progress-segment {
+  flex: 1;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  margin: 0 2px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Filled Segment */
+.progress-segment.completed {
+  background-color: #007BFF;
+}
+
+
+/* Responsive layout */
+@media (max-width: 800px) {
+  .flex-item-right,
+  .flex-item-left {
+    flex: 100%; /* Stacks the columns vertically on smaller screens */
   }
-
-
-    
- 
-  
-    /* Responsive layout - makes a one column layout instead of a two-column layout */
-    @media (max-width: 800px) {
-      .flex-item-right, .flex-item-left {
-        flex: 100%;
-      }
-    }
-  
-
-
+}
 

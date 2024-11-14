@@ -188,10 +188,16 @@ class HabitTracker:
         
         # Convert dates to datetime objects and sort in descending order
         dates = pd.to_datetime(completed_dates).sort_values(ascending=False)
+        
+        if isinstance(self.today, str):
+            today = pd.to_datetime(self.today)
+        else:
+            today= self.today
+        
         dates=dates[dates<self.today]
         
         # Check if the most recent completion was yesterday
-        if dates.iloc[0] != self.today - timedelta(days=1):
+        if dates.iloc[0] != today - timedelta(days=1):
             return 0  # No streak if yesterday was not completed
         
         streak = 0
@@ -338,6 +344,7 @@ def tracker_default():
 
     
     # If no entry for today, render with empty/default form
+    print(habit_tracker.streak)
     return render_template('tracker_default.html', daily_data={}, streak=habit_tracker.streak)
 
 #extended checklist
