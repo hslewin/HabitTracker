@@ -39,6 +39,7 @@
   </head>
   <body>
     <h1>75 Hard Challenge Tracker</h1>
+    <button onclick="window.location.href='/logout'">Logout</button>
     
     <div class="row">
       <div class="column">
@@ -121,16 +122,88 @@
       </div>
       <div class="column">
         <h2>Day {{ streak }}</h2>
-        <br>
-        <h2>Progress</h2>
-        <form>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-        </form>
+          <div class="total-tracker">
+              <div class="grid-container">
+                  <!-- Grid for days 1 to 75 -->
+                  {% for day in range(1, 76) %}
+                      <div class="grid-item" id="day-{{ day }}">{{ day }}</div>
+                  {% endfor %}
+              </div>
+          </div>
+          <h2> Daily Progress</h2>
+          <div class="progress-bar">
+            <div class="progress-segment" id="segment-1"></div>
+            <div class="progress-segment" id="segment-2"></div>
+            <div class="progress-segment" id="segment-3"></div>
+            <div class="progress-segment" id="segment-4"></div>
+            <div class="progress-segment" id="segment-5"></div>
+            <div class="progress-segment" id="segment-6"></div>
+          </div>
       </div>
-    </div>
-  </body>
+  </div>
+
+  
+  <script>
+
+
+      const streak = {{ streak }};
+      const dailyData = {
+        water: {{ daily_data['Water'] | tojson }},
+        exercise: {{ daily_data['Exercise'] | tojson }},
+        exercise2: {{ daily_data['Exercise2'] | tojson }},
+        outside: {{ daily_data['Outside'] | tojson }},
+        diet: {{ daily_data['Diet'] | tojson }},
+        read: {{ daily_data['Read'] | tojson }},
+        picture: {{ daily_data['Picture'] | tojson }}
+    };
+
+      
+      function updateTotalTracker() {
+          // Loop over all the grid items (1 to 75)
+          for (let i = 1; i <= 75; i++) {
+              const dayElement = document.getElementById(`day-${i}`);
+              
+              // If the day is less than or equal to the streak, mark it as completed
+              if (i <= streak) {
+                  dayElement.classList.add("completed");
+                  dayElement.classList.remove("incomplete");
+              } else {
+                  dayElement.classList.remove("completed");
+                  dayElement.classList.add("incomplete");
+              }
+          }
+      }
+
+      function updateProgressBar() {
+        // Array of tasks, each representing whether the task is completed
+        const tasks = [
+            dailyData.water,
+            dailyData.exercise,
+            dailyData.exercise2,
+            dailyData.diet,
+            dailyData.read,
+            dailyData.Picture
+        ];
+
+        // Count how many tasks are completed
+        const completedTasks = tasks.filter(task => task).length;
+
+        // Loop through each segment and add the "completed" class based on the number of completed tasks
+        for (let i = 1; i <= 7; i++) {
+            const segment = document.getElementById(`segment-${i}`);
+            if (i <= completedTasks) {
+                segment.classList.add('completed');
+            } else {
+                segment.classList.remove('completed');
+            }
+        }
+    }
+
+      window.onload = function() {
+        updateTotalTracker();
+        updateProgressBar();};
+  </script>
+
+</body>
 </html>
+

@@ -12,18 +12,19 @@
 
 <body>
     <h1>75 Hard Challenge Tracker</h1>
+    <button onclick="window.location.href='/logout'">Logout</button>
 
     <div class="row">
         <div class="column">
             <h2>Today's Tasks</h2>
             <form action="/tracker_default" method="post">
-                <label><input type="checkbox" name="water_intake" {% if daily_data.Water %}checked{% endif %}> Water Intake</label><br>
-                <label><input type="checkbox" name="exercise_completed" {% if daily_data.Exercise %}checked{% endif %}> Exercise 1 Completed</label><br>
-                <label><input type="checkbox" name="exercise_completed2" {% if daily_data.Exercise2 %}checked{% endif %}> Exercise 2 Completed</label><br>
-                <label><input type="checkbox" name="exercise_outside" {% if daily_data.Outside %}checked{% endif %}> Exercised Outside</label><br>
-                <label><input type="checkbox" name="diet_followed" {% if daily_data.Diet %}checked{% endif %}> Diet Followed</label><br>
-                <label><input type="checkbox" name="read_pages" {% if daily_data.Read %}checked{% endif %}> Pages Read</label><br>
-                <label><input type="checkbox" name="picture_taken" {% if daily_data.Picture %}checked{% endif %}> Picture Taken</label><br>
+                <label><input type="checkbox" name="water_intake" {% if daily_data.Water %}checked{% endif %}> Water Intake</label>
+                <label><input type="checkbox" name="exercise_completed" {% if daily_data.Exercise %}checked{% endif %}> Exercise 1 Completed</label>
+                <label><input type="checkbox" name="exercise_completed2" {% if daily_data.Exercise2 %}checked{% endif %}> Exercise 2 Completed</label>
+                <label><input type="checkbox" name="exercise_outside" {% if daily_data.Outside %}checked{% endif %}> Exercised Outside</label>
+                <label><input type="checkbox" name="diet_followed" {% if daily_data.Diet %}checked{% endif %}> Diet Followed</label>
+                <label><input type="checkbox" name="read_pages" {% if daily_data.Read %}checked{% endif %}> Pages Read</label>
+                <label><input type="checkbox" name="picture_taken" {% if daily_data.Picture %}checked{% endif %}> Picture Taken</label>
                 
                 <button type="submit">Submit Today's Progress</button>
             </form>
@@ -55,7 +56,17 @@
     
     <script>
 
+
         const streak = {{ streak }};
+        const dailyData = {
+          water: {{ daily_data['Water'] | tojson }},
+          exercise: {{ daily_data['Exercise'] | tojson }},
+          exercise2: {{ daily_data['Exercise2'] | tojson }},
+          diet: {{ daily_data['Diet'] | tojson }},
+          read: {{ daily_data['Read'] | tojson }},
+          picture: {{ daily_data['Picture'] | tojson }}
+      };
+  
         
         function updateTotalTracker() {
             // Loop over all the grid items (1 to 75)
@@ -74,28 +85,30 @@
         }
 
         function updateProgressBar() {
+          // Array of tasks, each representing whether the task is completed
           const tasks = [
-            {{ daily_data.Water }},
-            {{ daily_data.Exercise }},
-            {{ daily_data.Exercise2 }},
-            {{ daily_data.Picture }},
-            {{ daily_data.Diet }},
-            {{ daily_data.Read }}
+              dailyData.water,
+              dailyData.exercise,
+              dailyData.exercise2,
+              dailyData.diet,
+              dailyData.read,
+              dailyData.Picture
           ];
-      
+
           // Count how many tasks are completed
-          const completedTasks = tasks.filter(task => task).length;
-      
+          const completedTasks = tasks.filter(task => task === true).length;
+
+
           // Loop through each segment and add the "completed" class based on the number of completed tasks
-          for (let i = 1; i <= 6; i++) {
-            const segment = document.getElementById(`segment-${i}`);
-            if (i <= completedTasks) {
-              segment.classList.add('completed');
+          for (let i = 0; i < tasks.length; i++) {
+            const segment = document.getElementById(`segment-${i + 1}`);
+            if (i < completedTasks) {
+                segment.classList.add('completed');
             } else {
-              segment.classList.remove('completed');
+                segment.classList.remove('completed');
             }
           }
-        }
+      }
 
         window.onload = function() {
           updateTotalTracker();
