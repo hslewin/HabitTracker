@@ -69,9 +69,9 @@ class HabitTracker:
                           water_intake=0, water_oz=0, 
                           exercise_completed=False, e1_time=0, e1_type='', 
                           exercise_completed2=False, e2_time=0, e2_type='', 
-                          exercise_outside=False, diet_followed=False, 
+                          diet_followed=False, 
                           calories=0, read_pages=0, pages=0, 
-                          title='', picture_taken=False):
+                          title='', picture_taken=False, water_oz_extra=0):
         # Check if there's already an entry for today
         existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
         
@@ -79,42 +79,42 @@ class HabitTracker:
             # Create a new entry for today if it doesn't exist
             new_entry = {
                 'Date': self.today,
-                'Water': water_intake,
-                'Water_Oz': water_oz,
-                'Exercise': exercise_completed,
-                'E1_Time': e1_time,
-                'E1_Type': e1_type,
-                'Exercise2': exercise_completed2,
-                'E2_Time': e2_time,
-                'E2_Type': e2_type,
-                'Outside': exercise_outside,
-                'Diet': diet_followed,
-                'Calories': calories,
-                'Read': read_pages,
-                'Pages': pages,
-                'Title': title,
-                'Picture': picture_taken,
+                'Water_intake': water_intake or False,
+                'Water_oz': water_oz or 0,
+                'Exercise_completed': exercise_completed or False,
+                'E1_Time': e1_time or 0,
+                'E1_Type': e1_type or '',
+                'Exercise_complted2': exercise_completed2 or False,
+                'E2_Time': e2_time or 0,
+                'E2_Type': e2_type or '',
+                'Diet_followed': diet_followed or False,
+                'Calories': calories or 0 ,
+                'Read_pages': read_pages or False,
+                'Pages': pages or 0,
+                'Title': title or '',
+                'Picture_taken': picture_taken or False,
+                'Water_oz_extra': water_oz_extra or 0,
                 'streak_number': 0,  
             }
             self.daily_data = pd.concat([self.daily_data, pd.DataFrame([new_entry])], ignore_index=True)
         else:
             # Update the existing entry
             idx = existing_entry.index[0]
-            self.daily_data.at[idx, 'Water'] = water_intake
-            self.daily_data.at[idx,'Water_Oz']= water_oz
-            self.daily_data.at[idx, 'Exercise'] = exercise_completed
+            self.daily_data.at[idx, 'Water_intake'] = water_intake
+            self.daily_data.at[idx,'Water_oz']= water_oz
+            self.daily_data.at[idx, 'Exercise_completed'] = exercise_completed
             self.daily_data.at[idx, 'E1_Time'] = e1_time
             self.daily_data.at[idx, 'E1_Type'] = e1_type
-            self.daily_data.at[idx, 'Exercise2'] = exercise_completed2
+            self.daily_data.at[idx, 'Exercise_completed2'] = exercise_completed2
             self.daily_data.at[idx, 'E2_Time'] = e2_time
             self.daily_data.at[idx, 'E2_Type'] = e2_type
-            self.daily_data.at[idx, 'Outside'] = exercise_outside
-            self.daily_data.at[idx, 'Diet'] = diet_followed
+            self.daily_data.at[idx, 'Diet_followed'] = diet_followed
             self.daily_data.at[idx,'Calories'] = calories
-            self.daily_data.at[idx, 'Read',] = read_pages
+            self.daily_data.at[idx, 'Read_pages',] = read_pages
             self.daily_data.at[idx, 'Pages'] =  pages
             self.daily_data.at[idx, 'Title'] = title
-            self.daily_data.at[idx, 'Picture'] = picture_taken
+            self.daily_data.at[idx, 'Picture_taken'] = picture_taken
+            self.daily_data.at[idx, 'Water_oz_extra']= water_oz_extra
         
         # Check if all tasks are completed
         self.check_all_tasks_completed(self.today)
@@ -132,7 +132,7 @@ class HabitTracker:
         check_entry = self.daily_data[self.daily_data['Date'] == date_check].iloc[0]
         
         # List of tasks to check
-        tasks = ['Water', 'Exercise', 'Exercise2', 'Outside', 'Diet', 'Read', 'Picture']
+        tasks = ['Water_intake', 'Exercise_completed', 'Exercise_completed2', 'Diet_followed', 'Read_pages', 'Picture_taken']
 
         # Iterate through each task to see if it's completed
         all_tasks_completed = True  # Assume all tasks are completed
@@ -363,43 +363,52 @@ def tracker_extra():
     today_entry = habit_tracker.daily_data[habit_tracker.daily_data['Date'] == habit_tracker.today]
     
     if request.method == 'POST':
-        water_intake = 'water_intake' in request.form
-        water_oz = int(request.form.get('Water_Oz', 0))
-        exercise_completed = 'exercise_completed' in request.form
+        water_intake = 'Water_intake' in request.form
+        water_oz = int(request.form.get('Water_oz', 0))
+        exercise_completed = 'Exercise_completed' in request.form
         e1_time = int(request.form.get('E1_Time', 0))
         e1_type = request.form.get('E1_Type', '')
-        exercise_completed2 = 'exercise_completed2' in request.form
+        exercise_completed2 = 'Exercise_completed2' in request.form
         e2_time = int(request.form.get('E2_Time', 0))
         e2_type = request.form.get('E2_Type', '')
-        exercise_outside = 'exercise_outside' in request.form
-        diet_followed = 'diet_followed' in request.form
+        diet_followed = 'Diet_followed' in request.form
         calories = int(request.form.get('Calories', 0))
-        read_pages = 'read_pages' in request.form
-        title = request.form.get('Title', '')
-        pages = int(request.form.get('Pages', 0))
-        picture_taken = 'picture_taken' in request.form
+        read_pages = 'Read_pages' in request.form
+        title = request.form.get('Title', '')  
+        pages = request.form.get('Pages', 0)
+        if pages.isdigit():
+            if pages >= 10:
+                read_pages=True
+        else:
+            pages=0    
+        picture_taken = 'Picture_taken' in request.form
+        water_oz_extra=request.form.get('Water_oz_extra', 0)
+        if water_oz_extra.isdigit():
+            water_oz += water_oz_extra
+        else:
+            water_oz_extra=0
 
-        habit_tracker.track_habits_extended(water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, exercise_outside, diet_followed, calories, read_pages, pages, title, picture_taken)
+        habit_tracker.track_habits_extended(water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, diet_followed, calories, read_pages, pages, title, picture_taken)
         return redirect(url_for('tracker_extra'))
     
     # Set default values if today_entry is empty
     if today_entry.empty:
         today_entry_data = {
-            'Water': False,
-            'Exercise': False,
-            'Exercise2': False,
-            'Outside': False,
-            'Diet': False,
-            'Read': False,
-            'Picture': False,
-            'Water_Oz': 0,
+            'Water_intake': False,
+            'Exercise_completed': False,
+            'Exercise_completed2': False,
+            'Diet_followed': False,
+            'Read_pages': False,
+            'Picture_taken': False,
+            'Water_oz': 0,
             'E1_Time': 0,
             'E1_Type': '',
             'E2_Time': 0,
             'E2_Type': '',
             'Calories': 0,
             'Pages': 0,
-            'Title': ''
+            'Title': '',
+            'Water_oz_extra': 0,
         }
     else:
         today_entry_data = today_entry.iloc[0].to_dict()

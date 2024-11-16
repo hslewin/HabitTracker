@@ -18,6 +18,7 @@
       function addWater(amount) {
         water_num += amount;
         document.getElementById('water_display').innerText = water_num;
+        document.getElementById('water_oz').value = water_num;
       }
 
 
@@ -72,12 +73,25 @@
 
         const streak = {{ streak }};
         const dailyData = {
-          water: {{ daily_data['Water'] | tojson }},
-          exercise1: {{ daily_data['Exercise'] | tojson }},
-          exercise2: {{ daily_data['Exercise2'] | tojson }},
-          diet: {{ daily_data['Diet'] | tojson }},
-          read: {{ daily_data['Read'] | tojson }},
-          picture: {{ daily_data['Picture'] | tojson }}
+          water_intake: {{ daily_data['Water_intake'] | default(False) | tojson }},
+          exercise_completed: {{ daily_data['Exercise_completed'] | default(False) | tojson }},
+          exercise_completed2: {{ daily_data['Exercise_completed2'] | default(False) | tojson }},
+          diet_followed: {{ daily_data['Diet_followed'] | default(False) | tojson }},
+          read_pages: {{ daily_data['Read_pages'] | default(False) | tojson }},
+          picture_taken: {{ daily_data['Picture_taken'] | default(False) | tojson }}
+          water_oz: {{daily_data['Water_oz']| default (0) | tojson }}
+          e1_time: {{daily_data['El_time']| default (0) | tojson }}
+          e2_time: {{daily_data['E2_time']| default (0) | tojson }}
+          e1_type: {{daily_data['El_type']| default ('') | tojson }}
+          e2_type: {{daily_data['E2_type']| default ('') | tojson }}
+          calories: {{daily_data['Calories']| default (0) | tojson }}
+          pages: {{daily_data['Pages']| default (0) | tojson }}
+          title: {{daily_data['Title']| default ('') | tojson }}
+          water_oz_extra: {{daily_data['Water_oz_extra'] | default(0)| tojson}}
+
+
+
+
         };
         updateProgressBar(dailyData);
         updateStreakTracker({{ streak }});
@@ -96,7 +110,7 @@
          
         <!--water intake-->
         <label class="task-label">
-          <input type="checkbox" id="water_checkbox" name="water_checkbox" {% if daily_data.water %}checked{% endif %}>
+          <input type="checkbox" id="water_checkbox" name="water_checkbox" {% if daily_data.Water_intake %}checked{% endif %}>
            Drink at least 128 oz of water.
           <button type="button" class="toggle-button" onclick="toggleTaskInfo('water_info', 'water_arrow')" id="water_arrow">▲</button>
         </label>
@@ -106,14 +120,16 @@
                 <button type="button" class ="btn btn-add" onclick="addWater(8)">+ 8 oz</button>
                 <button type="button" class ="btn btn-add" onclick="addWater(16)">+ 16 oz</button>
                 <button type="button" class ="btn btn-add" onclick="addWater(24)">+ 24 oz</button>
+                <input type="hidden" id="water_oz" name="water_oz" value="{{ water_num }}">
               </div><br>
-            <p>Other:<input type="number" id="water_intake" name="water_intake"></p>
+            <p>Other:<input type="number" id="water_oz_extra" name="Water_oz_extra" value="{{ daily_data.Water_oz_extra }}">
+            </p>
           </div>
           <br>
 
           <!--exercise 1-->
             <label for="exercise_completed1" class="task-label">
-              <input type="checkbox" id="exercise_checkbox1" name="exercise_checkbox1" {% if daily_data.Exercise %}checked{% endif %}>
+              <input type="checkbox" id="exercise_checkbox1" name="exercise_checkbox1" {% if daily_data.Exercise_completed %}checked{% endif %}>
               Outside Exercise 45 Minutes
               <button type="button" class="toggle-button" onclick="toggleTaskInfo('e1_info', 'e1_arrow')" id="e1_arrow">▲</button>
           </label>
@@ -126,7 +142,7 @@
 
           <!--exercise 2-->
           <label for="exercise_completed2" class="task-label">
-            <input type="checkbox" id="exercise_checkbox2" name="exercise_checkbox2" {% if daily_data.Exercise2 %}checked{% endif %}>
+            <input type="checkbox" id="exercise_checkbox2" name="exercise_checkbox2" {% if daily_data.Exercise_completed2 %}checked{% endif %}>
             Exercise 45 Minutes
             <button type="button" class="toggle-button" onclick="toggleTaskInfo('e2_info', 'e2_arrow')" id="e2_arrow">▲</button>
         </label>
@@ -139,30 +155,30 @@
 
           <!--diet-->      
           <label for="diet_followed" class="task-label">
-            <input type="checkbox" id="diet_checkbox" name="diet_checkbox" {% if daily_data.Diet %}checked{% endif %}>
+            <input type="checkbox" id="diet_checkbox" name="diet_checkbox" {% if daily_data.Diet_followed %}checked{% endif %}>
             Diet
             <button type="button" class="toggle-button" onclick="toggleTaskInfo('diet_info', 'diet_arrow')" id="diet_arrow">▲</button>
           </label>
           <div id="diet_info" class="info">
-          <label for="calories">Calories:<input type="number" id="calories" name="calories"></label>
+          <p for="calories">Calories:<input type="number" id="calories" name="calories"></p>
           </div>
           <br>
           
           <!--reading-->
-          <label for="read_pages" class = "task-label">
-            <input type="checkbox" name="reading_checbox" id="reading_checkbox" {% if daily_data.Read %}checked{% endif %}>
+          <label for="Read_pages" class = "task-label">
+            <input type="checkbox" name="reading_checbox" id="reading_checkbox" {% if daily_data.Read_pages %}checked{% endif %}>
             Read at least 10 pages
             <button type="button" class="toggle-button" onclick="toggleTaskInfo('reading_info', 'read_arrow')" id="read_arrow">▲</button>
           </label>
           <div id="read_info" class="info">
-            <label for="pages">Number of pages:<input type="number" id="pages" name="pages"></label>
-            <label for="title">Title:<input type="text" id="title" name="title"></label>
+            <p for="Pages">Number of pages:<input type="number" id="Pages" name="Pages"></p>
+            <p for="Title">Title:<input type="text" id="Title" name="Title"></p>
           </div>
           <br>
 
           <!--picture-->
-          <label for="picture_taken">
-            <input type="checkbox" name="picture_taken" id="picture_taken" {% if daily_data.Picture %}checked{% endif %}>
+          <label for="Picture_taken">
+            <input type="checkbox" name="picture_taken" id="Picture_taken" {% if daily_data.Picture_taken %}checked{% endif %}>
             Picture Taken
           </label>
           <br>

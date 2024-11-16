@@ -1,3 +1,1 @@
-Date,Water,Water_oz,Exercise,Exercise2,Outside,Diet,Read,Picture,completed,streak_number,Water_Oz,E1_Time,E1_Type,E2_Time,E2_Type,Calories,Pages,Title
-2024-11-14,True,,False,False,False,False,False,False,False,0,0,0,,0,,0,0,
-2024-11-15,True,,False,False,False,False,False,False,False,0,0,0,,0,,0,0,
+Date, Water_intake, Exercise_completed, Exercise_completed2, Diet_followed, Read_pages, Picture_taken, Water_oz, E1_Time, E1_Type, E2_Time, E2_Type, Calories, Pages, Title, Water_oz_extra, completed,streak_number ,Water_intake,Water_oz,Exercise_completed,E1_Time,E1_Type,Exercise_complted2,E2_Time,E2_Type,Diet_followed,Calories,Read_pages,Pages,Title,Picture_taken,Water_oz_extra,streak_number,completed
