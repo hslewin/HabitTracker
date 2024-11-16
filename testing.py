@@ -84,7 +84,7 @@ class HabitTracker:
                 'Exercise_completed': exercise_completed or False,
                 'E1_Time': e1_time or 0,
                 'E1_Type': e1_type or '',
-                'Exercise_complted2': exercise_completed2 or False,
+                'Exercise_completed2': exercise_completed2 or False,
                 'E2_Time': e2_time or 0,
                 'E2_Type': e2_type or '',
                 'Diet_followed': diet_followed or False,
@@ -119,7 +119,7 @@ class HabitTracker:
         # Check if all tasks are completed
         self.check_all_tasks_completed(self.today)
         self.update_streak_2()
-        self.water_oz=water_oz
+
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
@@ -357,38 +357,45 @@ def tracker_default():
     
     return render_template('tracker_default.html', daily_data=today_entry_data, streak=habit_tracker.streak)
 
-# Tracker for extended layout
 @app.route('/tracker_extra', methods=['GET', 'POST'])
 def tracker_extra():
     today_entry = habit_tracker.daily_data[habit_tracker.daily_data['Date'] == habit_tracker.today]
     
     if request.method == 'POST':
         water_intake = 'Water_intake' in request.form
-        water_oz = int(request.form.get('Water_oz', 0))
+        water_oz_str = request.form.get('Water_oz', '0')
+        water_oz = int(water_oz_str) if water_oz_str.isdigit() else 0
+        
+        water_oz_extra_str = request.form.get('Water_oz_extra', '0')
+        water_oz_extra = int(water_oz_extra_str) if water_oz_extra_str.isdigit() else 0
+        water_oz += water_oz_extra
+        habit_tracker.water_oz = water_oz
+        
         exercise_completed = 'Exercise_completed' in request.form
-        e1_time = int(request.form.get('E1_Time', 0))
-        e1_type = request.form.get('E1_Type', '')
+        e1_time_str = request.form.get('E1_Time', '0')
+        e1_time = int(e1_time_str) if e1_time_str.isdigit() else 0
+        e1_type = request.form.get('E1_Type', "")
+        
         exercise_completed2 = 'Exercise_completed2' in request.form
-        e2_time = int(request.form.get('E2_Time', 0))
-        e2_type = request.form.get('E2_Type', '')
+        e2_time_str = request.form.get('E2_Time', '0')
+        e2_time = int(e2_time_str) if e2_time_str.isdigit() else 0
+        e2_type = request.form.get('E2_Type', "")
+        
         diet_followed = 'Diet_followed' in request.form
-        calories = int(request.form.get('Calories', 0))
+        calories_str = request.form.get('Calories', '0')
+        calories = int(calories_str) if calories_str.isdigit() else 0
+        
         read_pages = 'Read_pages' in request.form
-        title = request.form.get('Title', '')  
-        pages = request.form.get('Pages', 0)
-        if pages.isdigit():
-            if pages >= 10:
-                read_pages=True
-        else:
-            pages=0    
+        title = request.form.get('Title', "")  
+        
+        pages_str = request.form.get('Pages', '0')
+        pages = int(pages_str) if pages_str.isdigit() else 0
+        if pages >= 10:
+            read_pages = True
+        
         picture_taken = 'Picture_taken' in request.form
-        water_oz_extra=request.form.get('Water_oz_extra', 0)
-        if water_oz_extra.isdigit():
-            water_oz += water_oz_extra
-        else:
-            water_oz_extra=0
 
-        habit_tracker.track_habits_extended(water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, diet_followed, calories, read_pages, pages, title, picture_taken)
+        habit_tracker.track_habits_extended(water_intake, water_oz, exercise_completed, e1_time, e1_type, exercise_completed2, e2_time, e2_type, diet_followed, calories, read_pages, pages, title, picture_taken, water_oz_extra)
         return redirect(url_for('tracker_extra'))
     
     # Set default values if today_entry is empty
@@ -414,6 +421,7 @@ def tracker_extra():
         today_entry_data = today_entry.iloc[0].to_dict()
 
     return render_template('tracker_extra.html', daily_data=today_entry_data, streak=habit_tracker.streak, water_num=habit_tracker.water_oz)
+
 
 
 if __name__ == '__main__':
