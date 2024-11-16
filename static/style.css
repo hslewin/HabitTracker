@@ -133,6 +133,17 @@ button {
   margin-top: 10px; /* Adds space between the button and the form fields */
 }
 
+
+.btn-add{
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  line-height: 20px;
+  padding:5px;
+  display:30%;
+}
+
 /* Progress Bar Container */
 .progress-bar {
   display: flex;
