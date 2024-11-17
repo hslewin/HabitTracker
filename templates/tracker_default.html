@@ -18,13 +18,12 @@
         <div class="column">
             <h2>Today's Tasks</h2>
             <form action="/tracker_default" method="post">
-                <label><input type="checkbox" name="water_intake" {% if daily_data.Water %}checked{% endif %}> Water Intake</label>
-                <label><input type="checkbox" name="exercise_completed" {% if daily_data.Exercise %}checked{% endif %}> Exercise 1 Completed</label>
-                <label><input type="checkbox" name="exercise_completed2" {% if daily_data.Exercise2 %}checked{% endif %}> Exercise 2 Completed</label>
-                <label><input type="checkbox" name="exercise_outside" {% if daily_data.Outside %}checked{% endif %}> Exercised Outside</label>
-                <label><input type="checkbox" name="diet_followed" {% if daily_data.Diet %}checked{% endif %}> Diet Followed</label>
-                <label><input type="checkbox" name="read_pages" {% if daily_data.Read %}checked{% endif %}> Pages Read</label>
-                <label><input type="checkbox" name="picture_taken" {% if daily_data.Picture %}checked{% endif %}> Picture Taken</label>
+                <label><input type="checkbox" name="Water_intake" {% if daily_data.Water_intake %}checked{% endif %}> Water Intake</label>
+                <label><input type="checkbox" name="Exercise_completed" {% if daily_data.Exercise_completed %}checked{% endif %}> Exercise 1 Completed</label>
+                <label><input type="checkbox" name="Exercise_completed2" {% if daily_data.Exercise_completed2 %}checked{% endif %}> Exercise 2 Completed</label>
+                <label><input type="checkbox" name="Diet_followed" {% if daily_data.Diet_followed %}checked{% endif %}> Diet Followed</label>
+                <label><input type="checkbox" name="Read_pages" {% if daily_data.Read_pages %}checked{% endif %}> Pages Read</label>
+                <label><input type="checkbox" name="Picture_taken" {% if daily_data.Picture_taken %}checked{% endif %}> Picture Taken</label>
                 
                 <button type="submit">Submit Today's Progress</button>
             </form>
@@ -59,12 +58,12 @@
 
         const streak = {{ streak }};
         const dailyData = {
-          water: {{ daily_data['Water'] | tojson }},
-          exercise: {{ daily_data['Exercise'] | tojson }},
-          exercise2: {{ daily_data['Exercise2'] | tojson }},
-          diet: {{ daily_data['Diet'] | tojson }},
-          read: {{ daily_data['Read'] | tojson }},
-          picture: {{ daily_data['Picture'] | tojson }}
+          water_intake: {{ daily_data['Water_intake'] | default(False)| tojson }},
+          exercise_completed: {{ daily_data['Exercise_completed'] | default(False)| tojson }},
+          exercise_completed2: {{ daily_data['Exercise_completed2'] | default(False)|  tojson }},
+          diet_followed: {{ daily_data['Diet_followed'] | default(False)|  tojson }},
+          read_pages: {{ daily_data['Read_pages'] | default(False)| tojson }},
+          picture_taken: {{ daily_data['Picture_taken'] | default(False)| tojson }}
       };
   
         
@@ -87,12 +86,12 @@
         function updateProgressBar() {
           // Array of tasks, each representing whether the task is completed
           const tasks = [
-              dailyData.water,
-              dailyData.exercise,
-              dailyData.exercise2,
-              dailyData.diet,
-              dailyData.read,
-              dailyData.picture
+              dailyData.water_intake,
+              dailyData.exercise_completed,
+              dailyData.exercise_completed2,
+              dailyData.diet_followed,
+              dailyData.read_pages,
+              dailyData.picture_taken
           ];
 
           // Count how many tasks are completed

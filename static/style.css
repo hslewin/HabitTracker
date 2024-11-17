@@ -158,10 +158,19 @@ input[type="checkbox"]:checked {
   border-color: #0056b3;
 }
 
+.hidden{
+  display: none;
+}
+
 .task {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+}
+
+.info {
+  display: none;
+  margin-top:
 }
 
 .task-label {
@@ -173,8 +182,8 @@ input[type="checkbox"]:checked {
 }
 
 .toggle-button {
-  display: inline;
-  position: static;
+  display: flex;
+  align-items: center;
   right:0;
   background-color: #007BFF;
   border: 2px solid  #0056b3;
@@ -184,13 +193,8 @@ input[type="checkbox"]:checked {
   cursor: pointer;
   border-radius: 4px; /* Optional: add rounded corners for style */
   margin-left: auto;
-  text-anchor: top ;
 }
 
-.info {
-  display: none;
-  margin-top:
-}
 
 .btn-group {
   display: flex;            /* Enables flexbox to align items in a row */
