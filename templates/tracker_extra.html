@@ -8,109 +8,252 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <title>75 Hard Challenge Tracker</title>
+  </head>
+
+  <body>
     <script>
-        function toggleInfo(infoId) {
-          var info = document.getElementById(infoId);
-          if (info.style.display === 'none' || info.style.display === '') {
-            info.style.display = 'block';
+
+      //constants
+      let water_num= {{water_num}};
+      const streak = {{streak}};
+
+      const dailyData = {
+        water_intake: {{ daily_data['Water_intake'] | default(False) | tojson }},
+        exercise_completed: {{ daily_data['Exercise_completed'] | default(False) | tojson }},
+        exercise_completed2: {{ daily_data['Exercise_completed2'] | default(False) | tojson }},
+        diet_followed: {{ daily_data['Diet_followed'] | default(False) | tojson }},
+        read_pages: {{ daily_data['Read_pages'] | default(False) | tojson }},
+        picture_taken: {{ daily_data['Picture_taken'] | default(False) | tojson }}
+            };
+  
+      //tracking water
+      function addWater(amount) {
+        water_num += amount;
+        document.getElementById('water_display').innerText = water_num;
+        document.getElementById('Water_oz').value = water_num;
+      }
+  
+  
+      // Toggle visibility of a task's information
+      function toggleTaskInfo(taskId, arrowId, graphId) {
+        const taskInfo = document.getElementById(taskId);
+        const arrow = document.getElementById(arrowId);
+        const graph = document.getElementById(graphId);
+        if (taskInfo.style.display === 'none' || !taskInfo.style.display) {
+          taskInfo.style.display = 'block';
+          arrow.textContent = '▼'; // Down arrow
+          graph.style.display = 'flex';
+        } else {
+          taskInfo.style.display = 'none';
+          arrow.textContent = '▲'; // Up arrow
+          graph.style.display = 'none';
+        }
+      }
+  
+         // Update tracker grid for streaks
+      function updateStreakTracker(streak) {
+        for (let i = 1; i <= 75; i++) {
+          const dayElement = document.getElementById(`day-${i}`);
+          if (i <= streak) {
+            dayElement.classList.add('completed');
+            dayElement.classList.remove('incomplete');
           } else {
-            info.style.display = 'none';
+            dayElement.classList.remove('completed');
+            dayElement.classList.add('incomplete');
           }
         }
-        let water_oz = {{water_oz}}
-        function addWater(amount) {
-          water_oz += amount;
-          document.getElementById('water_display').innerText = water_oz;
+      }
+  
+      function updateProgressBar() {
+        // Array of tasks, each representing whether the task is completed
+        const tasks = [
+            dailyData.water_intake,
+            dailyData.exercise_completed,
+            dailyData.exercise_completed2,
+            dailyData.diet_followed,
+            dailyData.read_pages,
+            dailyData.picture_taken
+        ];
+          // Reset progress bar
+        for (let i = 0; i < tasks.length; i++) {
+          const segment = document.getElementById(`segment-${i + 1}`);
+          segment.classList.remove('completed');
+         }
+  
+        // Count how many tasks are completed
+        const completedTasks = tasks.filter(task => task === true).length;
+  
+        // Loop through each segment and add the "completed" class based on the number of completed tasks
+        for (let i = 0; i < completedTasks; i++) {
+          const segment = document.getElementById(`segment-${i + 1}`);
+          segment.classList.add('completed');
         }
-      </script>
+        }
 
-  </head>
-  <body>
+
+        
+
+      // Initialize on page load
+      window.onload = function() {
+
+        updateProgressBar(dailyData);
+  
+        updateStreakTracker({{ streak }});
+      };
+    </script>
+
+
     <h1>75 Hard Challenge Tracker</h1>
+    <button onclick="window.location.href='/logout'">Logout</button>
     
     <div class="row">
       <div class="column">
         <h2>Today's Tasks</h2>
-        <form action="/tracker_extra" method="post">
-            
-          <label for="water_intake">
-            <button type="button" onclick="toggleInfo('water_info')">Drink at least 1 gallon of water. </button>
+              
+          <form action="/tracker_extra" method="post">
+         
+          <!--water intake-->
+          <label class="task-label">
+            <input type="checkbox" id="Water_intake"  name="Water_intake" {% if daily_data.Water_intake %}checked{% endif %}></input>
+            Drink at least 128 oz of water.
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('water_info', 'water_arrow', 'water_graph')" id="water_arrow">▲</button>
           </label>
           <div id="water_info" class="info">
-            <label>Water intake so far: <span id="water_display">{{ water_oz }}</span> oz</label><br>
-                <button type="button" class ="btn btn-add" onclick="addWater(8)">Add 8 oz</button>
-                <button type="button" class ="btn btn-add" onclick="addWater(16)">Add 16 oz</button>
-                <button type="button" class ="btn btn-add" onclick="addWater(24)">Add 24 oz</button>
-          <label for="water_intake">Other amount:<input type="number" id="water_intake" name="water_intake"></label>
+            <p> Water intake so far: <span id="water_display">{{ water_num }}</span> oz</p>
+              <div class="btn-group">
+                <button type="button" class ="btn btn-add" onclick="addWater(8)">+ 8 oz</button>
+                <button type="button" class ="btn btn-add" onclick="addWater(16)">+ 16 oz</button>
+                <button type="button" class ="btn btn-add" onclick="addWater(24)">+ 24 oz</button>
+                <input type="hidden" id="Water_oz" name="Water_oz" value="{{ water_num }}">
+              </div><br>
+            <p>Other:<input type="number" id="water_oz_extra" name="Water_oz_extra" value="{{ daily_data.Water_oz_extra }}"></p>
+            
           </div>
           <br>
 
-          <label for="exercise_completed">
-            <button type="button" onclick="toggleInfo('e1_info')">Exercise 45 Minutes One -- outside. </button>
+          <!--exercise 1-->
+          <label for="exercise_completed1" class="task-label">
+            <input type="checkbox" id="Exercise_completed" name="Exercise_completed" {% if daily_data.Exercise_completed %}checked{% endif %}>
+            Outside Exercise 45 Minutes
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('e1_info', 'e1_arrow', 'e1_graph')" id="e1_arrow">▲</button>
           </label>
           <div id="e1_info" class="info">
-            <label>Add your exercise time and type:</label><br>
-            <label for="e1_time">Time:<input type="number" id="e1_time" name="e1_time"></label>
-            <label for="e1_type">Type:<input type="text" id="e1_type" name="e1_type"></label>
-
-            <label for="exercise_outside">
-              <input type="checkbox" name="exercise_outside" id="exercise_outside" {% if daily_data.Outside %}checked{% endif %}>
-              Exercised Outside
-            </label>
+            <p>Add your exercise time and type:</p><br>
+            <p for="E1_time">Time:<input type="number" id="E1_time" name="E1_time"></p><br>
+            <p for="E1_type">Type:<input type="text" id="E1_type" name="E1_type"></p>
           </div>
           <br>
 
-          <label for="exercise_completed2">
-            <button type="button" onclick="toggleInfo('e2_info')">Exercise 45 Minutes Two. </button>
+          <!--exercise 2-->
+          <label for="exercise_completed2" class="task-label">
+            <input type="checkbox" id="Exercise_completed2"name="Exercise_completed2" {% if daily_data.Exercise_completed2 %}checked{% endif %}>
+            Exercise 45 Minutes
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('e2_info', 'e2_arrow', 'e2_graph')" id="e2_arrow">▲</button>
           </label>
           <div id="e2_info" class="info">
-            <label>Add your exercise time and type:</label><br>
-            <label for="e2_time">Time:<input type="number" id="e2_time" name="e2_time"></label>
-            <label for="e2_type">Type:<input type="text" id="e2_type" name="e2_type"></label>
+            <p>Add your exercise time and type:</p><br>
+            <p for="E2_type2_time">Time:<input type="number" id="E2_time" name="E2_time"></p><br>
+            <p for="E2_type">Type:<input type="text" id="E2_type" name="E2_type"></p>
           </div>
           <br>
-      
-          <label for="diet_followed">
-            <input type="checkbox" name="diet_followed" id="diet_followed" {% if daily_data.Diet %}checked{% endif %}>
-            Diet Followed
+
+          <!--diet-->      
+          <label for="diet_followed" class="task-label">
+            <input type="checkbox" id="Diet_followed" name="Diet_followed" {% if daily_data.Diet_followed %}checked{% endif %}>
+            Diet
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('diet_info', 'diet_arrow', 'calories_graph')" id="diet_arrow">▲</button>
           </label>
-          <button type="button" onclick="toggleInfo('diet_info')">Diet</button>
           <div id="diet_info" class="info">
-          <label for="calories">Calories:<input type="number" id="calories" name="calories"></label>
+          <p for="Calories">Calories:<input type="number" id="Calories" name="Calories"></p>
           </div>
           <br>
           
-          <label for="read_pages">
-            <button type="button" onclick="toggleInfo('read_info')">Read at least 10 pages. </button>
+          <!--reading-->
+          <label for="Read_pages" class = "task-label">
+            <input type="checkbox" name="Read_pages" id="Read_pages" {% if daily_data.Read_pages %}checked{% endif %}>
+            Read at least 10 pages
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('read_info', 'read_arrow', 'pages_graph')" id="read_arrow">▲</button>
           </label>
           <div id="read_info" class="info">
-            <label for="pages">Number of pages:<input type="number" id="pages" name="pages"></label>
-            <label for="title">Title:<input type="text" id="title" name="title"></label>
+            <p for="Pages">Number of pages:<input type="number" id="Pages" name="Pages"></p>
+            <p for="Title">Title:<input type="text" id="Title" name="Title"></p>
           </div>
           <br>
-     
-          <label for="picture_taken">
-            <input type="checkbox" name="picture_taken" id="picture_taken" {% if daily_data.Picture %}checked{% endif %}>
+
+          <!--picture-->
+          <label for="Picture_taken">
+            <input type="checkbox" name="Picture_taken" id="Picture_taken" {% if daily_data.Picture_taken %}checked{% endif %}>
             Picture Taken
           </label>
           <br>
+
+         
           
+          <!--submit-->
           <button type="submit">Submit Today's Progress</button>
         </form>
         <br>
       </div>
+
+
       <div class="column">
+        <!--streak graphic-->
         <h2>Day {{ streak }}</h2>
-        <br>
-        <h2>Progress</h2>
-        <form>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-        </form>
-      </div>
+        <div class="total-tracker">
+            <div class="grid-container">
+                <!-- Grid for days 1 to 75 -->
+                {% for day in range(1, 76) %}
+                    <div class="grid-item" id="day-{{ day }}">{{ day }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!--progress bar-->
+        <h2> Daily Progress</h2>
+        <div class="progress-bar">
+          <div class="progress-segment" id="segment-1"></div>
+          <div class="progress-segment" id="segment-2"></div>
+          <div class="progress-segment" id="segment-3"></div>
+          <div class="progress-segment" id="segment-4"></div>
+          <div class="progress-segment" id="segment-5"></div>
+          <div class="progress-segment" id="segment-6"></div>
+        </div>
+      
+
+        <!--graph for habits, toggle between each habit-->
+        
+        
+        <div id ="water_graph" class="graph">
+          {{water_oz_data | safe}}
+
+        </div>
+
+        <div id="e1_graph"  class="graph">
+          {{e1_time_data | safe}}
+        </div>
+
+        <div id="e2_graph" class="graph"> 
+          {{e2_time_data | safe}}
+        </div>
+
+        <div id="calories_graph" class="graph">
+          {{calories_data | safe}}
+        </div>
+
+        <div id="pages_graph" class="graph">
+          {{pages_data | safe}}
+        </div>
+       
+
     </div>
-  </body>
+  </div>
+
+
+  
+
+    
+
+</body>
 </html>
+
+

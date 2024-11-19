@@ -1,83 +1,119 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Heather Lewin">
-    <meta name='description' content="Semester project for HCI5840 Fall 2024">
+    <meta name="description" content="Semester project for HCI5840 Fall 2024">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <title>75 Hard Challenge Tracker</title>
-   
-   
-  </head>
-  <body>
+</head>
+
+<body>
     <h1>75 Hard Challenge Tracker</h1>
+    <button onclick="window.location.href='/logout'">Logout</button>
+
+    <div class="row">
+        <div class="column">
+            <h2>Today's Tasks</h2>
+            <form action="/tracker_default" method="post">
+                <label><input type="checkbox" name="Water_intake" {% if daily_data.Water_intake %}checked{% endif %}> Water Intake</label>
+                <label><input type="checkbox" name="Exercise_completed" {% if daily_data.Exercise_completed %}checked{% endif %}> Exercise 1 Completed</label>
+                <label><input type="checkbox" name="Exercise_completed2" {% if daily_data.Exercise_completed2 %}checked{% endif %}> Exercise 2 Completed</label>
+                <label><input type="checkbox" name="Diet_followed" {% if daily_data.Diet_followed %}checked{% endif %}> Diet Followed</label>
+                <label><input type="checkbox" name="Read_pages" {% if daily_data.Read_pages %}checked{% endif %}> Pages Read</label>
+                <label><input type="checkbox" name="Picture_taken" {% if daily_data.Picture_taken %}checked{% endif %}> Picture Taken</label>
+                
+                <button type="submit">Submit Today's Progress</button>
+            </form>
+            <br>
+        </div>
+
+        <div class="column">
+            <h2>Day {{ streak }}</h2>
+            <div class="total-tracker">
+                <div class="grid-container">
+                    <!-- Grid for days 1 to 75 -->
+                    {% for day in range(1, 76) %}
+                        <div class="grid-item" id="day-{{ day }}">{{ day }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <h2> Daily Progress</h2>
+            <div class="progress-bar">
+              <div class="progress-segment" id="segment-1"></div>
+              <div class="progress-segment" id="segment-2"></div>
+              <div class="progress-segment" id="segment-3"></div>
+              <div class="progress-segment" id="segment-4"></div>
+              <div class="progress-segment" id="segment-5"></div>
+              <div class="progress-segment" id="segment-6"></div>
+            </div>
+        </div>
+    </div>
+
     
-    <div class = "row">
-      <div class ="column">
-        <h2>Today's Tasks</h2>
-        <form action="/tracker_default" method="post">
-          <label for="water_intake">
-          <input type="checkbox" name="water_intake" {% if daily_data.Water %}checked{% endif %}>
-          Water Intake</label>
-          <br>
-          
-          <label for="exercise_completed">
-          <input type="checkbox" name="exercise_completed" {% if daily_data.Exercise %}checked{% endif %}>
-          Exercise 1 Completed</label>
-          <br>
-          
-          <label for="exercise_completed2">
-          <input type="checkbox" name="exercise_completed2" {% if daily_data.Exercise2 %}checked{% endif %}>
-          Exercise 2 Completed</label>
-          <br>
-          
-          <label for="exercise_outside">
-          <input type="checkbox" name="exercise_outside" {% if daily_data.Outside %}checked{% endif %}>
-          Exercised Outside</label>
-          <br>
-          
-          <label for="diet_followed">
-          <input type="checkbox" name="diet_followed" {% if daily_data.Diet %}checked{% endif %}>
-          Diet Followed</label><br>
-          
-          <label for="read_pages">
-          <input type="checkbox" name="read_pages" {% if daily_data.Read %}checked{% endif %}>
-          Pages Read</label>
-          <br>
-          
-          <label for="picture_taken">
-          <input type="checkbox" name="picture_taken" {% if daily_data.Picture %}checked{% endif %}>
-          Picture Taken</label>
-          <br>
+    <script>
+
+
+        const streak = {{ streak }};
+        const dailyData = {
+          water_intake: {{ daily_data['Water_intake'] | default(False)| tojson }},
+          exercise_completed: {{ daily_data['Exercise_completed'] | default(False)| tojson }},
+          exercise_completed2: {{ daily_data['Exercise_completed2'] | default(False)|  tojson }},
+          diet_followed: {{ daily_data['Diet_followed'] | default(False)|  tojson }},
+          read_pages: {{ daily_data['Read_pages'] | default(False)| tojson }},
+          picture_taken: {{ daily_data['Picture_taken'] | default(False)| tojson }}
+      };
+  
         
-          
-          <button type="submit">Submit Today's Progress</button>
-    
-        </form>
-        <br>
+        function updateTotalTracker() {
+            // Loop over all the grid items (1 to 75)
+            for (let i = 1; i <= 75; i++) {
+                const dayElement = document.getElementById(`day-${i}`);
+                
+                // If the day is less than or equal to the streak, mark it as completed
+                if (i <= streak) {
+                    dayElement.classList.add("completed");
+                    dayElement.classList.remove("incomplete");
+                } else {
+                    dayElement.classList.remove("completed");
+                    dayElement.classList.add("incomplete");
+                }
+            }
+        }
+
+        function updateProgressBar() {
+          // Array of tasks, each representing whether the task is completed
+          const tasks = [
+              dailyData.water_intake,
+              dailyData.exercise_completed,
+              dailyData.exercise_completed2,
+              dailyData.diet_followed,
+              dailyData.read_pages,
+              dailyData.picture_taken
+          ];
+
+          // Count how many tasks are completed
+          const completedTasks = tasks.filter(task => task === true).length;
 
 
-       </div>
-       <div class ="column">
-        <h2>Day {{ streak }}</h2>
-        <br>
-        <h2>Progress</h2>
-        <form>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-        </form>
+          // Loop through each segment and add the "completed" class based on the number of completed tasks
+          for (let i = 0; i < tasks.length; i++) {
+            const segment = document.getElementById(`segment-${i + 1}`);
+            if (i < completedTasks) {
+                segment.classList.add('completed');
+            } else {
+                segment.classList.remove('completed');
+            }
+          }
+      }
 
-        
+        window.onload = function() {
+          updateTotalTracker();
+          updateProgressBar();};
+    </script>
 
-       </div>
-      </div>
-   
-  </body>
+</body>
 </html>
-
 
