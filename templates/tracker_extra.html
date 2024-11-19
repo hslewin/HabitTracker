@@ -35,15 +35,18 @@
   
   
       // Toggle visibility of a task's information
-      function toggleTaskInfo(taskId, arrowId) {
+      function toggleTaskInfo(taskId, arrowId, graphId) {
         const taskInfo = document.getElementById(taskId);
         const arrow = document.getElementById(arrowId);
+        const graph = document.getElementById(graphId);
         if (taskInfo.style.display === 'none' || !taskInfo.style.display) {
           taskInfo.style.display = 'block';
           arrow.textContent = '▼'; // Down arrow
+          graph.style.display = 'flex';
         } else {
           taskInfo.style.display = 'none';
           arrow.textContent = '▲'; // Up arrow
+          graph.style.display = 'none';
         }
       }
   
@@ -92,12 +95,7 @@
 
       // Initialize on page load
       window.onload = function() {
-  
-        const taskInfoSections = document.querySelectorAll('.info');
-        taskInfoSections.forEach(section => {
-          section.style.display = 'none';
-        });
-        
+
         updateProgressBar(dailyData);
   
         updateStreakTracker({{ streak }});
@@ -111,14 +109,14 @@
     <div class="row">
       <div class="column">
         <h2>Today's Tasks</h2>
-          
+              
           <form action="/tracker_extra" method="post">
          
           <!--water intake-->
           <label class="task-label">
             <input type="checkbox" id="Water_intake"  name="Water_intake" {% if daily_data.Water_intake %}checked{% endif %}></input>
             Drink at least 128 oz of water.
-            <button type="button" class="toggle-button" onclick="toggleTaskInfo('water_info', 'water_arrow')" id="water_arrow">▲</button>
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('water_info', 'water_arrow', 'water_graph')" id="water_arrow">▲</button>
           </label>
           <div id="water_info" class="info">
             <p> Water intake so far: <span id="water_display">{{ water_num }}</span> oz</p>
@@ -129,6 +127,7 @@
                 <input type="hidden" id="Water_oz" name="Water_oz" value="{{ water_num }}">
               </div><br>
             <p>Other:<input type="number" id="water_oz_extra" name="Water_oz_extra" value="{{ daily_data.Water_oz_extra }}"></p>
+            
           </div>
           <br>
 
@@ -136,7 +135,7 @@
           <label for="exercise_completed1" class="task-label">
             <input type="checkbox" id="Exercise_completed" name="Exercise_completed" {% if daily_data.Exercise_completed %}checked{% endif %}>
             Outside Exercise 45 Minutes
-            <button type="button" class="toggle-button" onclick="toggleTaskInfo('e1_info', 'e1_arrow')" id="e1_arrow">▲</button>
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('e1_info', 'e1_arrow', 'e1_graph')" id="e1_arrow">▲</button>
           </label>
           <div id="e1_info" class="info">
             <p>Add your exercise time and type:</p><br>
@@ -149,7 +148,7 @@
           <label for="exercise_completed2" class="task-label">
             <input type="checkbox" id="Exercise_completed2"name="Exercise_completed2" {% if daily_data.Exercise_completed2 %}checked{% endif %}>
             Exercise 45 Minutes
-            <button type="button" class="toggle-button" onclick="toggleTaskInfo('e2_info', 'e2_arrow')" id="e2_arrow">▲</button>
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('e2_info', 'e2_arrow', 'e2_graph')" id="e2_arrow">▲</button>
           </label>
           <div id="e2_info" class="info">
             <p>Add your exercise time and type:</p><br>
@@ -162,7 +161,7 @@
           <label for="diet_followed" class="task-label">
             <input type="checkbox" id="Diet_followed" name="Diet_followed" {% if daily_data.Diet_followed %}checked{% endif %}>
             Diet
-            <button type="button" class="toggle-button" onclick="toggleTaskInfo('diet_info', 'diet_arrow')" id="diet_arrow">▲</button>
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('diet_info', 'diet_arrow', 'calories_graph')" id="diet_arrow">▲</button>
           </label>
           <div id="diet_info" class="info">
           <p for="Calories">Calories:<input type="number" id="Calories" name="Calories"></p>
@@ -173,7 +172,7 @@
           <label for="Read_pages" class = "task-label">
             <input type="checkbox" name="Read_pages" id="Read_pages" {% if daily_data.Read_pages %}checked{% endif %}>
             Read at least 10 pages
-            <button type="button" class="toggle-button" onclick="toggleTaskInfo('read_info', 'read_arrow')" id="read_arrow">▲</button>
+            <button type="button" class="toggle-button" onclick="toggleTaskInfo('read_info', 'read_arrow', 'pages_graph')" id="read_arrow">▲</button>
           </label>
           <div id="read_info" class="info">
             <p for="Pages">Number of pages:<input type="number" id="Pages" name="Pages"></p>
@@ -197,55 +196,57 @@
       </div>
 
 
-        <div class="column">
-          <!--streak graphic-->
-          <h2>Day {{ streak }}</h2>
-          <div class="total-tracker">
-              <div class="grid-container">
-                  <!-- Grid for days 1 to 75 -->
-                  {% for day in range(1, 76) %}
-                      <div class="grid-item" id="day-{{ day }}">{{ day }}</div>
-                  {% endfor %}
-              </div>
-          </div>
-
-          <!--progress bar-->
-          <h2> Daily Progress</h2>
-          <div class="progress-bar">
-            <div class="progress-segment" id="segment-1"></div>
-            <div class="progress-segment" id="segment-2"></div>
-            <div class="progress-segment" id="segment-3"></div>
-            <div class="progress-segment" id="segment-4"></div>
-            <div class="progress-segment" id="segment-5"></div>
-            <div class="progress-segment" id="segment-6"></div>
-          </div>
+      <div class="column">
+        <!--streak graphic-->
+        <h2>Day {{ streak }}</h2>
+        <div class="total-tracker">
+            <div class="grid-container">
+                <!-- Grid for days 1 to 75 -->
+                {% for day in range(1, 76) %}
+                    <div class="grid-item" id="day-{{ day }}">{{ day }}</div>
+                {% endfor %}
+            </div>
         </div>
-      </div>
 
-      <!--graph for habits, toggle between each habit-->
+        <!--progress bar-->
+        <h2> Daily Progress</h2>
+        <div class="progress-bar">
+          <div class="progress-segment" id="segment-1"></div>
+          <div class="progress-segment" id="segment-2"></div>
+          <div class="progress-segment" id="segment-3"></div>
+          <div class="progress-segment" id="segment-4"></div>
+          <div class="progress-segment" id="segment-5"></div>
+          <div class="progress-segment" id="segment-6"></div>
+        </div>
+      
 
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-      <div id="water_info" class="info">
+        <!--graph for habits, toggle between each habit-->
         
-
-      </div>
-
-      <div id="e1_info" class="info">
-       
-      </div>
-
-      <div id="e2_info" class="info"> 
         
-      </div>
+        <div id ="water_graph" class="graph">
+          {{water_oz_data | safe}}
 
-      <div id="diet_info" class="info">
-       
-      </div>
+        </div>
 
-      <div id="read_info" class="info">
+        <div id="e1_graph"  class="graph">
+          {{e1_time_data | safe}}
+        </div>
+
+        <div id="e2_graph" class="graph"> 
+          {{e2_time_data | safe}}
+        </div>
+
+        <div id="calories_graph" class="graph">
+          {{calories_data | safe}}
+        </div>
+
+        <div id="pages_graph" class="graph">
+          {{pages_data | safe}}
+        </div>
        
-      </div>
+
+    </div>
+  </div>
 
 
   
