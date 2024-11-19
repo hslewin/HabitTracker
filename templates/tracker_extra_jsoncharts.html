@@ -97,7 +97,75 @@
         taskInfoSections.forEach(section => {
           section.style.display = 'none';
         });
-        
+
+        //charts
+
+        const water_oz_data = {{water_oz_data | default({}) | tojson}};
+        const e1_time_data = {{el_time_data | default({}) | tojson}};
+        const e2_time_data = {{e2_time_data | default({}) | tojson}};
+        const calories_data = {{calories_data | default({}) | tojson}};
+        const pages_data = {{pages_data | default({}) | tojson}};
+
+        new Chart(document.getElementById('Water_oz_chart'), {
+          type: 'line',
+          data: {
+            labels: water_oz_data.dates, // Dates from your CSV
+            datasets: [{
+              label: 'Water Intake (oz)',
+              data: water_oz_data.Daily_water_oz, 
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            }]
+          }
+
+        new Chart(document.getElementById('E1_time_chart'), {
+          type: 'line',
+          data: {
+            labels: e1_time_data.dates,
+            datasets: [{
+              label: 'Daily outside exercise (min)',
+              data: e1_time_data.Daily_outside_exercise_time, 
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            }]
+          }
+
+        new Chart(document.getElementById('E2_time_chart'), {
+          type: 'line',
+          data: {
+            labels: e2_time_data.dates, 
+            datasets: [{
+              label: 'Daily exercise 2 (min)',
+              data: e2_time_data.Daily_exercise2_time, 
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            }]
+          }
+
+        new Chart(document.getElementById('Calories_chart'), {
+          type: 'line',
+          data: {
+            labels: calories_data.dates, 
+            datasets: [{
+              label: 'Daily Calories',
+              data: calories_data.Daily_calories, 
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            }]
+          }
+
+        new Chart(document.getElementById('Pages_chart'), {
+          type: 'line',
+          data: {
+            labels: pages_data.dates, 
+            datasets: [{
+              label: 'Daily pages read',
+              data: pages_data.Daily_pages, 
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            }]
+          }
+  
         updateProgressBar(dailyData);
   
         updateStreakTracker({{ streak }});
@@ -227,24 +295,23 @@
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
       <div id="water_info" class="info">
-        
-
+        <canvas id="Water_oz_chart"></canvas>
       </div>
 
       <div id="e1_info" class="info">
-       
+        <canvas id="E1_time_chart"></canvas>
       </div>
 
       <div id="e2_info" class="info"> 
-        
+        <canvas id="E2_time_chart"></canvas>
       </div>
 
       <div id="diet_info" class="info">
-       
+        <canvas id="Calories_chart"></canvas>
       </div>
 
       <div id="read_info" class="info">
-       
+        <canvas id="Pages_chart"></canvas>
       </div>
 
 
@@ -254,5 +321,3 @@
 
 </body>
 </html>
-
-

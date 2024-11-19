@@ -1,2 +1,19 @@
 Date,Water_intake,Water_oz,Exercise_completed,E1_time,E1_type,Exercise_completed2,E2_time,E2_type,Diet_followed,Calories,Read_pages,Pages,Title,Picture_taken,Day_completed,Streak_number
-
+2024-11-1,True,130,True,103,jogging,True,73,swim,True,1322,True,70,Harry Potter ,True,True,1
+2024-11-2,True,146,True,157,walking,True,47,weights,True,1522,True,52,Harry Potter ,True,True,2
+2024-11-3,True,145,True,89,walking,True,141,yoga,True,1438,True,25,Harry Potter ,True,True,3
+2024-11-4,True,134,True,61,walking,True,153,weights,True,1322,True,65,Harry Potter ,True,True,4
+2024-11-5,True,178,True,159,jogging,True,51,yoga,True,1467,True,41,Harry Potter ,True,True,5
+2024-11-6,True,145,True,148,jogging,True,82,yoga,True,1492,True,66,To Kill a mocking bird,True,True,6
+2024-11-7,True,134,True,179,jogging,True,64,yoga,True,1477,True,70,To Kill a mocking bird,True,True,7
+2024-11-8,True,129,True,77,walking,True,163,swim,True,1520,True,26,To Kill a mocking bird,True,True,8
+2024-11-9,True,130,True,125,walking,True,165,swim,True,1373,True,12,To Kill a mocking bird,True,True,9
+2024-11-10,True,160,True,60,jogging,True,66,weights,True,1540,True,17,To Kill a mocking bird,True,True,10
+2024-11-11,True,182,True,78,jogging,True,173,weights,True,1205,True,49,To Kill a mocking bird,True,True,11
+2024-11-12,True,152,True,179,walking,True,76,swim,True,1325,True,20,To Kill a mocking bird,True,True,12
+2024-11-13,True,128,True,135,walking,True,83,swim,True,1458,True,35,To Kill a mocking bird,True,True,13
+2024-11-14,True,139,True,169,walking,True,67,yoga,True,1496,True,68,What If,True,True,14
+2024-11-15,True,144,True,66,walking,True,138,yoga,True,1205,True,15,What If,True,True,15
+2024-11-16,True,139,True,169,walking,True,67,yoga,True,1496,True,68,What If,True,True,16
+2024-11-17,True,144,True,66,walking,True,138,yoga,True,1205,True,15,What If,True,True,17
+2024-11-18,True,48,True,0,,True,0,,True,0,True,0,,True,True,16

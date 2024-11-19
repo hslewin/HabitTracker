@@ -209,6 +209,27 @@ class HabitTracker:
         
         return streak
 
+    def parse_data_for_charts(self):
+        
+        water_oz_data ={'dates': self.daily_data['Date'].tolist(), 
+                        'Daily_water_oz': self.daily_data["Water_oz"].fillna(0).tolist()}
+        
+        e1_time_data ={'dates': self.daily_data['Date'].tolist(), 
+                        'Daily_outside_exercise_time': self.daily_data["E1_time"].fillna(0).tolist()}
+        
+        e2_time_data ={'dates': self.daily_data['Date'].tolist(), 
+                        'Daily_exercise2_time': self.daily_data["E2_time"].fillna(0).tolist()}
+        
+        calories_data ={'dates': self.daily_data['Date'].tolist(), 
+                        'Daily_calories': self.daily_data["Calories"].fillna(0).tolist()}
+        
+        pages_data ={'dates': self.daily_data['Date'].tolist(), 
+                        'Daily_pages': self.daily_data["Pages"].fillna(0).tolist()}
+        
+        return water_oz_data, e1_time_data, e2_time_data, calories_data, pages_data
+        
+        
+        
 
 habit_tracker = HabitTracker()
 
@@ -403,8 +424,10 @@ def tracker_extra():
         }
     else:
         today_entry_data = today_entry.iloc[0].to_dict()
+    
+    water_oz_data, e1_time_data, e2_time_data, calories_data, pages_data = habit_tracker.parse_data_for_charts()
 
-    return render_template('tracker_extra.html', daily_data=today_entry_data, streak=habit_tracker.streak, water_num=habit_tracker.water_oz)
+    return render_template('tracker_extra.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calorise_data = calories_data, pages_data= pages_data)
 
 
 
