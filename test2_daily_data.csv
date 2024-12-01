@@ -1,20 +1,34 @@
 Date,Water_intake,Water_oz,Exercise_completed,E1_time,E1_type,Exercise_completed2,E2_time,E2_type,Diet_followed,Calories,Read_pages,Pages,Title,Picture_taken,Day_completed,Streak_number
-2024-11-1,True,130,True,103,jogging,True,73,swim,True,1322,True,70,Harry Potter ,True,True,1
-2024-11-2,True,146,True,157,walking,True,47,weights,True,1522,True,52,Harry Potter ,True,True,2
-2024-11-3,True,145,True,89,walking,True,141,yoga,True,1438,True,25,Harry Potter ,True,True,3
-2024-11-4,True,134,True,61,walking,True,153,weights,True,1322,True,65,Harry Potter ,True,True,4
-2024-11-5,True,178,True,159,jogging,True,51,yoga,True,1467,True,41,Harry Potter ,True,True,5
-2024-11-6,True,145,True,148,jogging,True,82,yoga,True,1492,True,66,To Kill a mocking bird,True,True,6
-2024-11-7,True,134,True,179,jogging,True,64,yoga,True,1477,True,70,To Kill a mocking bird,True,True,7
-2024-11-8,True,129,True,77,walking,True,163,swim,True,1520,True,26,To Kill a mocking bird,True,True,8
-2024-11-9,True,130,True,125,walking,True,165,swim,True,1373,True,12,To Kill a mocking bird,True,True,9
-2024-11-10,True,160,True,60,jogging,True,66,weights,True,1540,True,17,To Kill a mocking bird,True,True,10
-2024-11-11,True,182,True,78,jogging,True,173,weights,True,1205,True,49,To Kill a mocking bird,True,True,11
-2024-11-12,True,152,True,179,walking,True,76,swim,True,1325,True,20,To Kill a mocking bird,True,True,12
-2024-11-13,True,128,True,135,walking,True,83,swim,True,1458,True,35,To Kill a mocking bird,True,True,13
-2024-11-14,True,139,True,169,walking,True,67,yoga,True,1496,True,68,What If,True,True,14
-2024-11-15,True,144,True,66,walking,True,138,yoga,True,1205,True,15,What If,True,True,15
-2024-11-16,True,139,True,169,walking,True,67,yoga,True,1496,True,68,What If,True,True,16
-2024-11-17,True,144,True,66,walking,True,138,yoga,True,1205,True,15,What If,True,True,17
-2024-11-18,True,48,True,0,,True,0,,True,0,True,0,,True,True,18
-2024-11-19,True,160,True,65,,True,46,,True,1500,True,15,,True,True,18
+11/1/2024,TRUE,130,TRUE,103,jogging,TRUE,73,swim,TRUE,1322,TRUE,70,Harry Potter ,TRUE,TRUE,1
+11/2/2024,TRUE,146,TRUE,157,walking,TRUE,47,weights,TRUE,1522,TRUE,52,Harry Potter ,TRUE,TRUE,2
+11/3/2024,TRUE,145,TRUE,89,walking,TRUE,141,yoga,TRUE,1438,TRUE,25,Harry Potter ,TRUE,TRUE,3
+11/4/2024,TRUE,134,TRUE,61,walking,TRUE,153,weights,TRUE,1322,TRUE,65,Harry Potter ,TRUE,TRUE,4
+11/5/2024,TRUE,178,TRUE,159,jogging,TRUE,51,yoga,TRUE,1467,TRUE,41,Harry Potter ,TRUE,TRUE,5
+11/6/2024,TRUE,145,TRUE,148,jogging,TRUE,82,yoga,TRUE,1492,TRUE,66,To Kill a mocking bird,TRUE,TRUE,6
+11/7/2024,TRUE,134,TRUE,179,jogging,TRUE,64,yoga,TRUE,1477,TRUE,70,To Kill a mocking bird,TRUE,TRUE,7
+11/8/2024,TRUE,129,TRUE,77,walking,TRUE,163,swim,TRUE,1520,TRUE,26,To Kill a mocking bird,TRUE,TRUE,8
+11/9/2024,TRUE,130,TRUE,125,walking,TRUE,165,swim,TRUE,1373,TRUE,12,To Kill a mocking bird,TRUE,TRUE,9
+11/10/2024,TRUE,160,TRUE,60,jogging,TRUE,66,weights,TRUE,1540,TRUE,17,To Kill a mocking bird,TRUE,TRUE,10
+11/11/2024,TRUE,182,TRUE,78,jogging,TRUE,173,weights,TRUE,1205,TRUE,49,To Kill a mocking bird,TRUE,TRUE,11
+11/12/2024,TRUE,152,TRUE,179,walking,TRUE,76,swim,TRUE,1325,TRUE,20,To Kill a mocking bird,TRUE,TRUE,12
+11/13/2024,TRUE,128,TRUE,135,walking,TRUE,83,swim,TRUE,1458,TRUE,35,To Kill a mocking bird,TRUE,TRUE,13
+11/14/2024,TRUE,139,TRUE,169,walking,TRUE,67,yoga,TRUE,1496,TRUE,68,What If,TRUE,TRUE,14
+11/15/2024,TRUE,144,TRUE,66,walking,TRUE,138,yoga,TRUE,1205,TRUE,15,What If,TRUE,TRUE,15
+11/16/2024,TRUE,139,TRUE,169,walking,TRUE,67,yoga,TRUE,1496,TRUE,68,What If,TRUE,TRUE,16
+11/17/2024,TRUE,144,TRUE,66,walking,TRUE,138,yoga,TRUE,1205,TRUE,15,What If,TRUE,TRUE,17
+11/18/2024,TRUE,178,TRUE,89,jogging,TRUE,46,yoga,TRUE,1373,TRUE,31,,TRUE,TRUE,18
+11/19/2024,TRUE,145,TRUE,61,jogging,TRUE,46,yoga,TRUE,1540,TRUE,30,,TRUE,TRUE,19
+11/20/2024,TRUE,134,TRUE,159,jogging,TRUE,83,swim,TRUE,1354,TRUE,29,What If,TRUE,TRUE,20
+11/21/2024,TRUE,129,TRUE,148,walking,TRUE,67,swim,TRUE,1347,TRUE,28,What If,TRUE,TRUE,21
+11/22/2024,TRUE,130,TRUE,179,walking,TRUE,138,weights,TRUE,1340,TRUE,27,,TRUE,TRUE,22
+11/23/2024,TRUE,160,TRUE,77,jogging,TRUE,67,weights,TRUE,1333,TRUE,26,,TRUE,TRUE,23
+11/24/2024,TRUE,182,TRUE,125,jogging,TRUE,138,swim,TRUE,1326,TRUE,25,What If,TRUE,TRUE,24
+11/25/2024,TRUE,152,TRUE,60,walking,TRUE,46,swim,TRUE,1319,TRUE,24,What If,TRUE,TRUE,25
+11/26/2024,TRUE,128,TRUE,78,walking,TRUE,46,yoga,TRUE,1312,TRUE,23,,TRUE,TRUE,26
+11/27/2024,TRUE,178,TRUE,179,walking,TRUE,45,yoga,TRUE,1304,TRUE,22,,TRUE,TRUE,27
+11/28/2024,TRUE,145,TRUE,135,walking,TRUE,56,yoga,TRUE,1297,TRUE,21,What If,TRUE,TRUE,28
+11/29/2024,TRUE,134,TRUE,169,walking,TRUE,55,swim,TRUE,1290,TRUE,20,What If,TRUE,TRUE,29
+11/30/2024,TRUE,129,TRUE,89,jogging,TRUE,48,swim,TRUE,1283,TRUE,19,,TRUE,TRUE,30
+12/1/2024,TRUE,130,TRUE,61,jogging,TRUE,49,weights,TRUE,1276,TRUE,18,,TRUE,TRUE,31
+12/2/2024,TRUE,160,TRUE,159,jogging,TRUE,52,weights,TRUE,1269,TRUE,17,What If,TRUE,TRUE,32
+12/3/2024,TRUE,182,TRUE,148,walking,TRUE,62,swim,TRUE,1262,TRUE,16,What If,TRUE,TRUE,33
