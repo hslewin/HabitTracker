@@ -63,7 +63,7 @@ p{
 /* Grid container for the 75 days */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(10, 1fr); /* 15 columns for 75 items */
+  grid-template-columns: repeat(15, 1fr); /* 15 columns for 75 items */
   gap: 4px; /* Reduced gap for compactness */
   margin-top: 20px;
   margin-bottom: 20px;
@@ -174,9 +174,9 @@ input[type="checkbox"]:checked {
 
 
 .graph{
-  width: 75%; 
-  margin-left: auto; /* Center grid container */
-  margin-right: auto; /* Center grid container */
+  width: 100%;
+  max-width: 300px;
+  margin: 10 px auto;
   display: none;
 }
 

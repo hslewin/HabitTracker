@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import plotly.express as px
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import date, timedelta
 
@@ -15,6 +16,7 @@ class HabitTracker:
         self.streak=0
         self.streak_date=""
         self.water_oz=0
+        self.cal=0
     
     #method to check in username and password match
     def checkLogin(self, username, password):
@@ -87,6 +89,11 @@ class HabitTracker:
         
         if pages >=10:
             read_pages = True
+        
+        self.cal +=calories
+        calories=self.cal
+        
+        
     
         
         if existing_entry.empty:
@@ -208,28 +215,6 @@ class HabitTracker:
                 break
         
         return streak
-
-    def parse_data_for_charts(self):
-        
-        water_oz_data ={'dates': self.daily_data['Date'].tolist(), 
-                        'Daily_water_oz': self.daily_data["Water_oz"].fillna(0).tolist()}
-        
-        e1_time_data ={'dates': self.daily_data['Date'].tolist(), 
-                        'Daily_outside_exercise_time': self.daily_data["E1_time"].fillna(0).tolist()}
-        
-        e2_time_data ={'dates': self.daily_data['Date'].tolist(), 
-                        'Daily_exercise2_time': self.daily_data["E2_time"].fillna(0).tolist()}
-        
-        calories_data ={'dates': self.daily_data['Date'].tolist(), 
-                        'Daily_calories': self.daily_data["Calories"].fillna(0).tolist()}
-        
-        pages_data ={'dates': self.daily_data['Date'].tolist(), 
-                        'Daily_pages': self.daily_data["Pages"].fillna(0).tolist()}
-        
-        return water_oz_data, e1_time_data, e2_time_data, calories_data, pages_data
-        
-        
-        
 
 habit_tracker = HabitTracker()
 
@@ -420,14 +405,31 @@ def tracker_extra():
             'Pages': 0,
             'Title': '',
             'Water_oz_extra': 0,
-            'Day_completed': False
+            'Cal_extra': 0,
+            'Day_completed': False,
         }
     else:
         today_entry_data = today_entry.iloc[0].to_dict()
+        
     
-    water_oz_data, e1_time_data, e2_time_data, calories_data, pages_data = habit_tracker.parse_data_for_charts()
+    water = px.line(habit_tracker.daily_data, x='Date', y='Water_oz', title='Water Intake Per Day')
+    water_oz_data = water.to_html(full_html=False)
+    
+    
+    e1 = px.line(habit_tracker.daily_data, x='Date', y='E1_time', title='Outdoor Exercise Per Day')
+    e1_time_data= e1.to_html(full_html=False)
+    
+    e2 = px.line(habit_tracker.daily_data, x='Date', y='E2_time', title='Second Exercise Per Day')
+    e2_time_data= e2.to_html(full_html=False)
+    
+    cal = px.line(habit_tracker.daily_data, x='Date', y='Calories', title='Calories Per Day')
+    calories_data= cal.to_html(full_html=False)
+    
+    pag = px.line(habit_tracker.daily_data, x='Date', y='Pages', title='Pages Read Per Day')
+    pages_data = pag.to_html(full_html=False)
+    
 
-    return render_template('tracker_extra.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calorise_data = calories_data, pages_data= pages_data)
+    return render_template('tracker_extra.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calories_data = calories_data, cal_num = habit_tracker.cal, pages_data= pages_data)
 
 
 
