@@ -189,6 +189,14 @@ class HabitTracker:
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
              
     def check_all_tasks_completed(self, date_check):
+        '''Check if all the daily goals have been achieved.
+        
+        Args: 
+            date_check: the entry date to be checked, must be '%Y-%m-%d' string
+        
+        Returns: true if all tasks are completed (true), false if any are missing 
+        
+        '''
         # Get today's entry
         if self.daily_data[self.daily_data['Date'] == date_check].empty:
             return False  # Return False if there's no entry for the given date
@@ -211,12 +219,18 @@ class HabitTracker:
         return all_tasks_completed
             
     def update_streak(self):    
-        current_streak=self.calculate_recent_streak()
-        print( current_streak)
+        '''Updates the streak date and count 
         
+        Returns: no return, updates app attributes and saves data to csv      
+        '''
+        #calculate the current streak 
+        current_streak=self.calculate_recent_streak()
+            
+        #check if today's streak has been completed
         if self.check_all_tasks_completed(self.today):
             current_streak += 1
         
+        #if streak is larger that 0 update the streak information in the app data and the csv
         if current_streak >0:   
             user_login_data = self.login_data[self.login_data['username'] == self.username]
             if not user_login_data.empty:
@@ -229,6 +243,10 @@ class HabitTracker:
             self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
             
     def calculate_recent_streak(self):
+        '''Calculate the number of consecutive previous days in which all tasks were completed
+        
+        Return: the number of days, must be int
+        '''
         # Filter rows where tasks were completed
         completed_dates = self.daily_data[self.daily_data['Day_completed'] == True]['Date']
         
@@ -264,15 +282,33 @@ habit_tracker = HabitTracker()
 
 @app.route('/')
 def home():
+    '''
+    Handles redirecting to the login page
+    
+    '''
     return render_template('login.html')
 
 #standard login page
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    '''
+    Handles user login
+    
+    Request Body:
+        username: username of the user, string
+        password: user's password, string
+    
+    Return:
+        error: if login fails
+    '''
+    
     error = None 
+    #request block
     if request.method == 'POST':  
         username = request.form['username']
         password = request.form['password']
+        
+        #check username and password, save info into application session, redirect to redirecting page
         if habit_tracker.checkLogin(username, password):
             user_daily = f"{username}_daily_data.csv"  
             habit_tracker.daily_data = pd.read_csv(user_daily)
@@ -281,6 +317,8 @@ def login():
             habit_tracker.streak_date = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'streak_date'].values[0]
             habit_tracker.setting_default = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'default_tracking'].values[0]
             return redirect(url_for('tracker_redirect'))  
+        
+        #if not correct username and password, present error message
         else:
             error = "Login failed. Try again. Or sign-up for an account"
    
@@ -289,6 +327,9 @@ def login():
 #logout page
 @app.route('/logout')
 def logout():
+    '''
+    Handles user logout, clears the saved session data
+    '''
     # Reset habit_tracker data
     habit_tracker.daily_data = pd.DataFrame()  # Empty DataFrame
     habit_tracker.username = ""
@@ -296,13 +337,25 @@ def logout():
     habit_tracker.streak_date = ''
     habit_tracker.setting_default = ''
     habit_tracker.water_oz=0
+    habit_tracker.cal=0
     
     return redirect(url_for('login'))  # Redirect to login page
 
 #registration page
 @app.route('/register', methods=["GET", "POST"])
 def register():
+    '''
+    Handles user registration
+    
+    Request Body:
+    username: username of the user, string
+    password: user's password, string
+    confirm_password: user's second version of their password, string
+    default_tracking: selection choice of version of tracker, simple or extended, Boolean: true is simple, false is extended
+    
+    '''
     error = None
+    #request block
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -351,6 +404,10 @@ def register():
 #redirect page to deterime which checklist page will be displayed
 @app.route('/tracker_redirect')
 def tracker_redirect():
+    '''
+    Handles the redirect between the various tracker settings.
+    
+    '''
     if  habit_tracker.setting_default == True:
             return redirect(url_for('tracker_default'))
     else:
@@ -358,8 +415,20 @@ def tracker_redirect():
 
 @app.route('/tracker_default', methods=['GET', 'POST'])
 def tracker_default():
+    '''
+    Handles the display of the simple checkbox tracker
+    
+    Request Body:
+        water_intake: did the user drink the goal amount of water, boolean  
+        exercise_completed: did the user do 45 minutes of outdoor exercise, boolean  
+        exercise_completed2: did the user do an additional 45 minutes of exercise, boolean
+        diet_followed: did the user follow their diet (no alcohol either), boolean
+        read_pages: did the user read at least 10 pages of non-fiction, boolean
+        picture_take: did the user take a progress picture, boolean
+    '''
     today_entry = habit_tracker.daily_data[habit_tracker.daily_data['Date'] == habit_tracker.today]
     
+    #request block
     if request.method == 'POST':
         water_intake = 'Water_intake' in request.form
         exercise_completed = 'Exercise_completed' in request.form
@@ -382,6 +451,8 @@ def tracker_default():
             'Picture_taken': False,
             'Day_completed': False
         }
+        
+    #set values of data to today_entry, information will be passed forward 
     else:
         today_entry_data = today_entry.iloc[0].to_dict()
     
@@ -389,8 +460,32 @@ def tracker_default():
 
 @app.route('/tracker_extra', methods=['GET', 'POST'])
 def tracker_extra():
+    '''
+    Handles the display of the extended tracker with extra data
+    
+    Request Body:
+        water_intake: did the user drink the goal amount of water, boolean  
+        water_oz_str: ounces of water inputed via buttons, int
+        water_oz_extra_str: ounces of water inputed via input box, int
+        exercise_completed: did the user do 45 minutes of outdoor exercise, boolean 
+        e1_time_str: minutes exercised outside, int
+        e1_type: type of excercise, string
+        exercise_completed2: did the user do an additional 45 minutes of exercise, boolean
+        e2_time_str: minutes exercised, int
+        e2_type: type of excercise, string
+        diet_followed: did the user follow their diet (no alcohol either), boolean
+        calories_str: number of calories, int
+        read_pages: did the user read at least 10 pages of non-fiction, boolean
+        title: title of the reading material, string
+        pages_str: number of pages read, int
+        picture_take: did the user take a progress picture, boolean
+    
+    
+    '''
+    
     today_entry = habit_tracker.daily_data[habit_tracker.daily_data['Date'] == habit_tracker.today]
     
+    #request block
     if request.method == 'POST':
         water_intake = 'Water_intake' in request.form
         water_oz_str = request.form.get('Water_oz', '0')
@@ -454,10 +549,9 @@ def tracker_extra():
     else:
         today_entry_data = today_entry.iloc[0].to_dict()
         
-    
+    #graphs to track data for displays on page, data over the course of the challenge
     water = px.line(habit_tracker.daily_data, x='Date', y='Water_oz', title='Water Intake Per Day')
     water_oz_data = water.to_html(full_html=False)
-    
     
     e1 = px.line(habit_tracker.daily_data, x='Date', y='E1_time', title='Outdoor Exercise Per Day')
     e1_time_data= e1.to_html(full_html=False)
@@ -471,7 +565,6 @@ def tracker_extra():
     pag = px.line(habit_tracker.daily_data, x='Date', y='Pages', title='Pages Read Per Day')
     pages_data = pag.to_html(full_html=False)
     
-
     return render_template('tracker_extra.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calories_data = calories_data, cal_num = habit_tracker.cal, pages_data= pages_data)
 
 
