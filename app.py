@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 class HabitTracker:
     def __init__(self):
-        self.login_data = pd.read_csv("logins.csv") #all logins for the application, includes username, password, streak, and streak_date
+        self.login_data = pd.read_csv("logins.csv") #all logins for the application, includes username, password, default_tracking, streak, and streak_date
         self.daily_data = pd.read_csv("user_habits.csv") #holding place, will be overwritten during successful login
         self.today = date.today().strftime('%Y-%m-%d')
         self.setting_default = True
@@ -20,18 +20,40 @@ class HabitTracker:
     
     #method to check in username and password match
     def checkLogin(self, username, password):
+        '''This checks to see if the username and password are both correct
+        Args:
+            username: user's identification, must be string
+            password: password associated with user, must be string
+        
+        Returns: boolean true if user name and password match entries, false if there is both don't match
+        '''
         return ((self.login_data['username'] == username) & (self.login_data['password'] == password)).any()
 
     def check_today_entry(self):
+        '''Check if there is a current entry in the user's daily data for the current day.
+        
+        Returns: if there is an entry will return the entry index, otherwise returns none
+        '''
+        #Check if entry for today's date exists
         today_entry = self.daily_data[self.daily_data['Date'] == self.today]
         if not today_entry.empty:
-            print("Today's entry exists.")
             return today_entry.iloc
         else:
-            print("No entry for today.")
             return None
 
     def track_habits(self, water_intake=False, exercise_completed=False, exercise_completed2=False, diet_followed=False, read_pages=False, picture_taken=False):
+        '''Saving data for the various goals of the "challenge", simple checklist
+        
+        Args: 
+            water_intake: did the user complete water intake for the day, pulled from checkbutton, must be boolean, defalult=False
+            exercise_completed: did the user complete exercise 1 for the day, pulled from checkbutton, must be boolean, defalult=False
+            exercise_completed2: did the user complete exercise 2 for the day, pulled from checkbutton, must be boolean, defalult=False
+            diet_followed: did the user follow the diet for the day, pulled from checkbutton, must be boolean, defalult=False
+            read_pages: did the user read set pages for the day, pulled from checkbutton, must be boolean, defalult=False
+            picture_taken: did the user take a picture for the day, pulled from checkbutton, must be boolean, defalult=False
+        
+        Returns: no return, data is saved to user's daily_data.csv
+        '''
         # Check if there's already an entry for today
         existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
         
@@ -72,29 +94,52 @@ class HabitTracker:
                           exercise_completed2=False, e2_time=0, e2_type='', 
                           diet_followed=False, calories=0, 
                           read_pages=False, pages=0, title='', 
-                          picture_taken=False ):
-        # Check if there's already an entry for today
+                          picture_taken=False ):        
+        '''Saving data for the various goals of the "challenge", extended with extra data
+        
+        Args: 
+            water_intake: did the user complete water intake for the day, pulled from checkbutton, must be boolean, defalult=False,
+            water_oz: number of overall ounces consumed for the day, must be int, default=0, 
+            water_oz_extra: number of ounces consumed before added to the total, must be int, default=0,
+            exercise_completed: did the user complete exercise 1 for the day, pulled from checkbutton, must be boolean, defalult=False,
+            e1_time: number of minutes exercised outside, must be int, default=0, 
+            e1_type: type of exercise completed, must be a string, default='', 
+            exercise_completed2: did the user complete exercise 2 for the day, pulled from checkbutton, must be boolean, defalult=False,
+            e2_time: number of minutes exercised in second session, must be int, default=0, 
+            e2_type: type of exercise completed, must be a string, default='',
+            diet_followed: did the user follow the diet for the day, pulled from checkbutton, must be boolean, defalult=False,
+            calories: number of calories ingetested, must be int, default=0, 
+            read_pages: did the user read set pages for the day, pulled from checkbutton, must be boolean, defalult=False
+            pages: nubmer of pages read, must be int, default=0, 
+            title: title of the book that is read, must be string, default='',
+            picture_taken: did the user take a picture for the day, pulled from checkbutton, must be boolean, defalult=False
+        
+        Returns: no return, data is saved to user's daily_data.csv
+        '''
+        # Check if there's already an entry for today, save to local variable
         existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
         
+        #Add water ounce, check if meet the daily goal, if meet change checkbox to true
         self.water_oz = water_oz
         water_oz += water_oz_extra
         if water_oz >= 128:
             water_intake = True
         
+        #check if exercise 1 meets daily goal, if meet change checkbox to true
         if e1_time >= 45:
             exercise_completed = True
-        
+    
+        #check if exercise 2 meets daily goal, if meet change checkbox to true
         if e2_time >= 45:
             exercise_completed2 = True
         
+        #check if pages read meets daily goal, if meet change checkbox to true
         if pages >=10:
             read_pages = True
         
+        #add calories in input to running total of calories,
         self.cal +=calories
         calories=self.cal
-        
-        
-    
         
         if existing_entry.empty:
             # Create a new entry for today if it doesn't exist
@@ -136,11 +181,9 @@ class HabitTracker:
             self.daily_data.at[idx, 'Title'] = title
             self.daily_data.at[idx, 'Picture_taken'] = picture_taken
         
-        
         # Check if all tasks are completed
         self.check_all_tasks_completed(self.today)
         self.update_streak()
-
 
         # Save updated data to CSV
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
