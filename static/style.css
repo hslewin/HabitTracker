@@ -9,10 +9,10 @@
 body {
   background-color: #b5dbff;
   font-family: Arial, sans-serif;
-  padding: 20px; /* Space around content */
+  padding: 20px; 
 }
 
-/* Styling for the header */
+/* header 1 styling*/
 h1 {
   background-color: #023181;
   color: #ededed;
@@ -22,6 +22,7 @@ h1 {
   width: 100%;
 }
 
+/* header 2 styling*/
 h2 {
   background-color: #023181;
   color: #ededed;
@@ -34,6 +35,7 @@ h2 {
   margin: 0 auto; /* Centers the heading */
 }
 
+/*regular text styling*/
 p{
   font-size: 20px;
   margin-left:10px;
@@ -111,6 +113,7 @@ form {
   margin-top: 20px; /* Adds space between form and previous content */
 }
 
+/*label styling*/
 label {
   background-color: #f1f1f1;
   margin: 5px;
@@ -127,6 +130,7 @@ label {
   margin-right: 10px;
 }
 
+/*basic button styling*/
 button {
   display: block;
   width: 100%;
@@ -141,6 +145,7 @@ button {
   margin-top: 10px; /* Adds space between the button and the form fields */
 }
 
+/* checkbox unchecked styling */
 input[type="checkbox"] {
   appearance: none; /* Removes default checkbox */
   width: 20px;
@@ -153,33 +158,25 @@ input[type="checkbox"] {
   padding-right: 10px;
 }
 
+/* checkbox checked styling */
 input[type="checkbox"]:checked {
   background-color: #007BFF;
   border-color: #0056b3;
 }
 
+/* use to hide items from display */
 .hidden{
   display: none;
 }
 
+/* task styling*/
 .task {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
 }
 
-.info {
-  display: none;
-  }
-
-
-.graph{
-  width: 100%;
-  max-width: 300px;
-  margin: 10 px auto;
-  display: none;
-}
-
+/* abel for the task styling*/
 .task-label {
   display: flex;
   align-items: center;
@@ -188,6 +185,20 @@ input[type="checkbox"]:checked {
   justify-content: space-between; /* Spread out items with space between */
 }
 
+/* info styling*/
+.info {
+  display: none;
+  }
+
+/* graphs styling*/
+.graph{
+  width: 100%;
+  max-width: 300px;
+  margin: 10 px auto;
+  display: none;
+}
+
+/* toggle button styling */
 .toggle-button {
   display: flex;
   align-items: center;
@@ -202,12 +213,13 @@ input[type="checkbox"]:checked {
   margin-left: auto;
 }
 
-
+/* water input button group styling*/
 .btn-group {
   display: flex;            /* Enables flexbox to align items in a row */
   gap: 10px;                /* Adds space between buttons */
 }
 
+/* water input button styling*/
 .btn-add {
   padding: 8px 12px;        
   border-radius: 5px;
@@ -246,7 +258,6 @@ input[type="checkbox"]:checked {
 .progress-segment.completed {
   background-color: #007BFF;
 }
-
 
 /* Responsive layout */
 @media (max-width: 800px) {

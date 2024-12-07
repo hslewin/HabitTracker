@@ -413,6 +413,7 @@ def tracker_redirect():
     else:
         return redirect(url_for('tracker_extra')) 
 
+#default tracker, simple checklist
 @app.route('/tracker_default', methods=['GET', 'POST'])
 def tracker_default():
     '''
@@ -458,6 +459,7 @@ def tracker_default():
     
     return render_template('tracker_default.html', daily_data=today_entry_data, streak=habit_tracker.streak)
 
+#extended tracker, extra data and displays
 @app.route('/tracker_extra', methods=['GET', 'POST'])
 def tracker_extra():
     '''
