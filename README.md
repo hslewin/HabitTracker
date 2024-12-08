@@ -4,12 +4,14 @@
 ###
 The tracker is based on the 75 Hard Challenge
 There are multiple goals to achieve each day or the challenge resets
--Drink 1 gallon (128 ounces) of water
--Exercise 45 minutes outside
--Exercise an additional 45 minutes
--Follow a diet of your choosing, no alchol allowed, no cheat days
--Read 10 pages of non-fiction
--Take a progress photo everyday
+
+Goals:
+- Drink 1 gallon (128 ounces) of water
+- Exercise 45 minutes outside
+- Exercise an additional 45 minutes
+- Follow a diet of your choosing, no alchol allowed, no cheat days
+- Read 10 pages of non-fiction
+- Take a progress photo everyday
 
 ### How to Use
 - The applicaiton will run from the app.py file.
