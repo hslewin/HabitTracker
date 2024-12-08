@@ -28,13 +28,15 @@ Goals:
 ##### Sign-in
 1. Input username and password to login and be directed to the user's tracking interface of choice  
    Alternatively link to a registration page if user doesn't have a username and password yet
-![Login Page](https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_Login.png){width=100px}
+<img src= https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_Login.png alt="Login Page" width=75% height=auto>
 
 ##### Registration
 1. Input username  
 2. Input password and confirm password
 3. Select if you want a simple checklist or extended tracking option  
 4. Once registered, user will be redirected tracking interface of their choice
+
+<img src= https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_reg.png alt="Registration Page" width=75% height=auto>
 
 ##### Default Tracker (simple checklist)
 1. Checkbox for each of the goals
@@ -47,6 +49,8 @@ Goals:
 2. Submit data button, user will redirected back to this tracker with checkbox data retained/visualized
 3. Over challenge progreess and daily progress visuallizations on the right half of the page
 4. User can logout when finished
+
+<img src= https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_default.png alt="Default Tracker Page" width=75% height=auto>
 
 ##### Extended Tracker (extended tracking)
 1. Checkbox with expandable area for each of the goals
@@ -65,11 +69,13 @@ Goals:
   -- Input for title of book
   -- Input for number of pages read
 - Take a progress photo everyday (does not include expandable area)
-  
 2. Submit data button, user will redirected back to this tracker with checkbox data retained/visualized
 3. Over challenge progreess and daily progress visuallizations on the right half of the page
 4. When goal's expandable area is opened the numerical data for the goal is displayed as well
 5. User can logout when finished
+
+<img src= https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_extended.png alt="Extended Tracker Page" width=75% height=auto>
+
 
 
 
