@@ -28,6 +28,7 @@ Goals:
 ##### Sign-in
 1. Input username and password to login and be directed to the user's tracking interface of choice  
    Alternatively link to a registration page if user doesn't have a username and password yet
+![Login Page](https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_Login.png){width=100px}
 
 ##### Registration
 1. Input username  
