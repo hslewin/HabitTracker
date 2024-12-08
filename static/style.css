@@ -9,17 +9,31 @@
 body {
   background-color: #b5dbff;
   font-family: Arial, sans-serif;
-  padding: 20px; 
+  padding: 5px; 
+  margin: 0;
+}
+
+/* page header*/
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;     
+  background-color: #023181;
+  border-bottom: 2px solid #007BFF;
+}
+
+.heading{
+  text-align: center;
+  position: relative;
 }
 
 /* header 1 styling*/
 h1 {
   background-color: #023181;
   color: #ededed;
-  text-align: center;
   padding: 10px;
   font-size: 40px;
-  width: 100%;
 }
 
 /* header 2 styling*/
@@ -164,6 +178,22 @@ input[type="checkbox"]:checked {
   border-color: #0056b3;
 }
 
+/* checkbox unchecked styling */
+input[type="submit"] {
+  background: #007BFF;
+  color: #fff;
+  border: 2px solid #0056b3;
+  margin: 5px;
+  text-align: left;
+  line-height: 36px;
+  font-size: 24px;
+  border-style: groove;
+  border-radius: 8px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
 /* use to hide items from display */
 .hidden{
   display: none;
@@ -227,8 +257,24 @@ input[type="checkbox"]:checked {
   cursor: pointer;
   text-align: left;
   line-height: 20px;
-  padding:5px;
   display:30%;
+}
+
+/* Logout button styling */
+.btn-logout {
+  position: absolute; /* Makes the button independent of Flexbox alignment */
+  right: 20px; /* Pushes the button to the far right */
+  background: #007BFF;
+  color: #fff;
+  border: 2px solid #0056b3;
+  margin: 5px;
+  text-align: left;
+  line-height: 36px;
+  font-size: 24px;
+  border-style: groove;
+  border-radius: 8px;
+  padding: 5px;
+  max-width: max-content;
 }
 
 /* Progress Bar Container */

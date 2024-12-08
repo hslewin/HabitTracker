@@ -10,11 +10,11 @@
     <title>Login to Habit Tracker</title>
 </head>
 <body>
-    <div class = "container">
+    <div class="header">
         <h1>Welcome to 75 Hard Habit Tracker!</h1>
     </div>
 
-
+    <!--login form-->
     <form method="POST" action = "/login">
         <label for="username">Username:
         <input type="text" id="username" name="username" required>
@@ -24,10 +24,10 @@
         <input type="password" id="password" name="password" required>
          </label>
         <br>
-        <br>
         <input type="submit" value="Login">
         <br>
-        <br>
+        
+        <!--error message-->
         {% if error%}
             <p style = "color: red;">{{error}}</p>
         {% endif %}

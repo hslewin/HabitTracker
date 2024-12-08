@@ -10,10 +10,11 @@
     <title>Register for Habit Tracker</title>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
         <h1>Register for 75 Hard Habit Tracker!</h1>
     </div>
 
+    <!--registration form--> 
     <form method="POST" action="/register">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
@@ -32,6 +33,8 @@
         <br><br>
         <input type="submit" value="Register">
         <br>
+
+        <!--error message logic-->
         {% if error %}
             <p style="color: red;">{{ error }}</p>
         {% endif %}

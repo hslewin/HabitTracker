@@ -11,12 +11,16 @@
 </head>
 
 <body>
-    <h1>75 Hard Challenge Tracker</h1>
-    <button onclick="window.location.href='/logout'">Logout</button>
+    
+    <div class="header">
+        <h1 class="heading">75 Hard Challenge Tracker</h1>
+        <button type="button" class="btn btn-logout" onclick="window.location.href='/logout'">Logout</button>
+    </div>
 
     <div class="row">
         <div class="column">
             <h2>Today's Tasks</h2>
+            <!--checklist-->
             <form action="/tracker_default" method="post">
                 <label><input type="checkbox" name="Water_intake" {% if daily_data.Water_intake %}checked{% endif %}> Water Intake</label>
                 <label><input type="checkbox" name="Exercise_completed" {% if daily_data.Exercise_completed %}checked{% endif %}> Exercise 1 Completed</label>
@@ -41,6 +45,8 @@
                 </div>
             </div>
             <h2> Daily Progress</h2>
+
+            <!--progress bar-->
             <div class="progress-bar">
               <div class="progress-segment" id="segment-1"></div>
               <div class="progress-segment" id="segment-2"></div>
@@ -52,10 +58,8 @@
         </div>
     </div>
 
-    
     <script>
-
-
+        //constants
         const streak = {{ streak }};
         const dailyData = {
           water_intake: {{ daily_data['Water_intake'] | default(False)| tojson }},
@@ -64,9 +68,9 @@
           diet_followed: {{ daily_data['Diet_followed'] | default(False)|  tojson }},
           read_pages: {{ daily_data['Read_pages'] | default(False)| tojson }},
           picture_taken: {{ daily_data['Picture_taken'] | default(False)| tojson }}
-      };
+        };
   
-        
+        //update the daily tracker
         function updateTotalTracker() {
             // Loop over all the grid items (1 to 75)
             for (let i = 1; i <= 75; i++) {
@@ -81,8 +85,9 @@
                     dayElement.classList.add("incomplete");
                 }
             }
-        }
+            }
 
+        //update progress bar
         function updateProgressBar() {
           // Array of tasks, each representing whether the task is completed
           const tasks = [
@@ -97,7 +102,6 @@
           // Count how many tasks are completed
           const completedTasks = tasks.filter(task => task === true).length;
 
-
           // Loop through each segment and add the "completed" class based on the number of completed tasks
           for (let i = 0; i < tasks.length; i++) {
             const segment = document.getElementById(`segment-${i + 1}`);
@@ -107,7 +111,7 @@
                 segment.classList.remove('completed');
             }
           }
-      }
+        }
 
         window.onload = function() {
           updateTotalTracker();

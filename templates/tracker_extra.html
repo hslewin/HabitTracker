@@ -18,6 +18,7 @@
       let cal_num ={{cal_num}};
       const streak = {{streak}};
 
+      //dailyData contants
       const dailyData = {
         water_intake: {{ daily_data['Water_intake'] | default(False) | tojson }},
         exercise_completed: {{ daily_data['Exercise_completed'] | default(False) | tojson }},
@@ -34,13 +35,11 @@
         document.getElementById('Water_oz').value = water_num;
       }
 
+      //tracking calories
       function addCal(amount){
         cal_num +=amount;
         document.getElementById('cal_display').innerText = cal_num;
       }
-
-      
-  
   
       // Toggle visibility of a task's information
       function toggleTaskInfo(taskId, arrowId, graphId) {
@@ -58,7 +57,7 @@
         }
       }
   
-         // Update tracker grid for streaks
+      // Update tracker grid for streaks
       function updateStreakTracker(streak) {
         for (let i = 1; i <= 75; i++) {
           const dayElement = document.getElementById(`day-${i}`);
@@ -82,7 +81,7 @@
             dailyData.read_pages,
             dailyData.picture_taken
         ];
-          // Reset progress bar
+        // Reset progress bar
         for (let i = 0; i < tasks.length; i++) {
           const segment = document.getElementById(`segment-${i + 1}`);
           segment.classList.remove('completed');
@@ -98,9 +97,6 @@
         }
         }
 
-
-        
-
       // Initialize on page load
       window.onload = function() {
 
@@ -109,14 +105,13 @@
         updateStreakTracker({{ streak }});
 
         document.getElementById('cal_display').innerText = cal_num;
-    
-
-      };
+          };
     </script>
 
-
-    <h1>75 Hard Challenge Tracker</h1>
-    <button onclick="window.location.href='/logout'">Logout</button>
+    <div class="header">
+      <h1 class="heading">75 Hard Challenge Tracker</h1>
+      <button type="button" class="btn btn-logout" onclick="window.location.href='/logout'">Logout</button>
+    </div>
     
     <div class="row">
       <div class="column">
@@ -142,7 +137,7 @@
           </div>
           <br>
 
-          <!--exercise 1-->
+          <!--exercise 1 outside-->
           <label for="exercise_completed1" class="task-label">
             <input type="checkbox" id="Exercise_completed" name="Exercise_completed" {% if daily_data.Exercise_completed %}checked{% endif %}>
             Outside Exercise 45 Minutes
@@ -205,16 +200,14 @@
           </label>
           <br>
 
-         
-          
           <!--submit-->
           <button type="submit">Submit Today's Progress</button>
         </form>
         <br>
       </div>
 
-
       <div class="column">
+
         <!--streak graphic-->
         <h2>Day {{ streak }}</h2>
         <div class="total-tracker">
@@ -239,9 +232,6 @@
       
 
         <!--graph for habits, toggle between each habit-->
-        
-        
-        
         <div id ="water_graph" class="graph">
           <h2>Graph</h2>
           {{water_oz_data | safe}}

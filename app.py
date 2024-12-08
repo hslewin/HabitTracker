@@ -481,8 +481,6 @@ def tracker_extra():
         title: title of the reading material, string
         pages_str: number of pages read, int
         picture_take: did the user take a progress picture, boolean
-    
-    
     '''
     
     today_entry = habit_tracker.daily_data[habit_tracker.daily_data['Date'] == habit_tracker.today]
@@ -568,8 +566,6 @@ def tracker_extra():
     pages_data = pag.to_html(full_html=False)
     
     return render_template('tracker_extra.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calories_data = calories_data, cal_num = habit_tracker.cal, pages_data= pages_data)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
