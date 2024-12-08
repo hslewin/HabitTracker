@@ -9,6 +9,7 @@
   - user_habits.csv
   - the templates folder and all of the templates
   - the static folder and the syle.css
+  - requirements.txt with all of the necessary modules and the versions
 - If you want to have a demonstration of the application you can also down load the additional CSV files
 
 ### Program options
