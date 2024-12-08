@@ -111,5 +111,12 @@ None of the functions would be available to end users, The functions could be si
   -- redirects to 'login' page
 - register: pulls data from inputs, sets up user data for the session
   -- redirects to 'tracker_redirect'
-- tracker_redirect: determines which 
+- tracker_redirect: determines which version of the tracker to redirect the user based on their version selection
+  -- redirects to either 'tracker_default' or 'tracker_extended'
+- tracker_default: pulls data from inputs and saves
+  -- redirects to self, 'tracker_default', with data pulled forward
+- tracker_extended: pulls data from inputs and saves, creates graphs for page
+  -- redirects to self, 'tracker_extended', with data pulled forward
+
+#### Possible Future 
 
