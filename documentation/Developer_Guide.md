@@ -76,6 +76,40 @@ Goals:
 
 <img src= https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_extended.png alt="Extended Tracker Page" width=75% height=auto>
 
-
-
+#### Key Application Elements
+##### Templates
+There are four html templates for the login, registration, default tracker, and extended tracker pages.
+- The login and registration pages are simple input boxes and submit buttons for the most part. There are built-in redirects back and forth between these pages.
+- The default tracker is a form with simple checkboxes and two displays run by fairly straighforward scripts. One display tracks the number of days completed. The other tracks progress towards todays completion.
+- The extended tracker contains all of the elements of the default tracker with addtional expanding areas to allow users to track more data if that is desired. There are functions to track and display water and calories. There are togglable sections available for 5 of the 6 goals. When a goal is toggled open the extra entry fields become availble, the associated graph is displayed, and an indication arrow is shifted.
+##### Static and Style  
+The static folder only contains the style sheet for the application. 
+The code in the toggleable sections is dependent on aspect of the style sheet, which enable parts of the page to be hidden and reveald as desired
+##### Necessary CSV files
+- logins.csv is needed to be able to login to the application &/or create new users
+- User_habits.csv is the template for user's daily data and is required for the applicaiton to function properly
+##### App.py
+This is the main page for the application. It contains both the class developed for the project and the flask framework that support the html pages.
+###### HabitTracker Class
+None of the functions would be available to end users, The functions could be simplified in the future
+- checkLogin: Checks to see if the username and password are both correct
+- check_today_entry: Check if there is a current entry in the user's daily data for the current day
+- track_habits: Saving data for the various goals of the "challenge", simple checklist,
+  -- functions used: check_all_tasks_completed, update_streak
+- track_habits_extended: Saving data for the various goals of the "challenge", extended with extra data
+  -- functions used: check_all_tasks_completed, update_streak
+- check_all_tasks_complete: Check if all the daily goals have been achieved.
+- update_streak: Updates the streak date and count 
+  -- functions used: check_all_tasks_complete, calulate_recent_streak
+- calculate_recent_streak: Calculate the number of consecutive previous days in which all tasks were completed
+###### Flask pages
+- home:
+  -- redirects to 'login' 
+- login: pulls data from imputs, checkLogin, added user data to the session
+  -- redirects to a 'tracker_redirect' 
+- logout: clears all user data from the session
+  -- redirects to 'login' page
+- register: pulls data from inputs, sets up user data for the session
+  -- redirects to 'tracker_redirect'
+- tracker_redirect: determines which 
 
