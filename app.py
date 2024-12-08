@@ -263,6 +263,10 @@ class HabitTracker:
         
         dates=dates[dates<self.today]
         
+        #if today is first streak date
+        if dates.empty:
+            return 0
+        
         # Check if the most recent completion was yesterday
         if dates.iloc[0] != today - timedelta(days=1):
             return 0  # No streak if yesterday was not completed
@@ -393,7 +397,7 @@ def register():
                 if default_tracking == True:
                     daily_data_df = pd.DataFrame(columns=['Date', 'Water', 'Exercise', 'Exercise2', 'Outside', 'Diet', 'Read', 'Picture', 'Day_completed', 'Streak_number'])
                 else:
-                    daily_data_df = pd.DataFrame(columns=['Date', 'Water','Water_oz','Exercise','Exercise2','Outside','Diet','Read','Picture','Day_completed','Streak_number','Water_Oz','E1_Time','E1_Type','E2_Time','E2_Type','Calories','Pages','Title'])
+                    daily_data_df = pd.DataFrame(columns=['Date', 'Water','Water_oz','Exercise','Exercise2','Outside','Diet','Read','Picture','Day_completed','Streak_number','Water_Oz','E1_time','E1_type','E2_time','E2_type','Calories','Pages','Title'])
                 
                 daily_data_df.to_csv(user_daily_file, index=False)
 
@@ -411,7 +415,7 @@ def tracker_redirect():
     if  habit_tracker.setting_default == True:
             return redirect(url_for('tracker_default'))
     else:
-        return redirect(url_for('tracker_extra')) 
+        return redirect(url_for('tracker_extended')) 
 
 #default tracker, simple checklist
 @app.route('/tracker_default', methods=['GET', 'POST'])
@@ -459,9 +463,9 @@ def tracker_default():
     
     return render_template('tracker_default.html', daily_data=today_entry_data, streak=habit_tracker.streak)
 
-#extended tracker, extra data and displays
-@app.route('/tracker_extra', methods=['GET', 'POST'])
-def tracker_extra():
+#extended tracker, extended data and displays
+@app.route('/tracker_extended', methods=['GET', 'POST'])
+def tracker_extended():
     '''
     Handles the display of the extended tracker with extra data
     
@@ -523,7 +527,7 @@ def tracker_extra():
                           read_pages, pages, title, 
                           picture_taken)
                               
-        return redirect(url_for('tracker_extra'))
+        return redirect(url_for('tracker_extended'))
     
     # Set default values if today_entry is empty
     if today_entry.empty:
@@ -565,7 +569,7 @@ def tracker_extra():
     pag = px.line(habit_tracker.daily_data, x='Date', y='Pages', title='Pages Read Per Day')
     pages_data = pag.to_html(full_html=False)
     
-    return render_template('tracker_extra.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calories_data = calories_data, cal_num = habit_tracker.cal, pages_data= pages_data)
+    return render_template('tracker_extended.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calories_data = calories_data, cal_num = habit_tracker.cal, pages_data= pages_data)
 
 if __name__ == '__main__':
     app.run(debug=True)

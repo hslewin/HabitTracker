@@ -117,7 +117,7 @@
       <div class="column">
         <h2>Today's Tasks</h2>
               
-          <form action="/tracker_extra" method="post">
+          <form action="/tracker_extended" method="post">
          
           <!--water intake-->
           <label class="task-label">
@@ -233,8 +233,7 @@
 
         <!--graph for habits, toggle between each habit-->
         <div id ="water_graph" class="graph">
-          <h2>Graph</h2>
-          {{water_oz_data | safe}}
+          <p>{{water_oz_data | safe}}</p>
         </div>
 
         <div id="e1_graph"  class="graph">
@@ -260,11 +259,6 @@
 
     </div>
   </div>
-
-
-  
-
-    
 
 </body>
 </html>
