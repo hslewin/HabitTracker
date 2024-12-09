@@ -28,7 +28,7 @@
         <label for="default_tracking">Tracking Type:</label>
         <select id="default_tracking" name="default_tracking" required>
             <option value= True>Simple Checklist</option>
-            <option value= False>Expanded Tracking</option>
+            <option value= False>Extended Tracking</option>
         </select>
         <br><br>
         <input type="submit" value="Register">
@@ -38,6 +38,8 @@
         {% if error %}
             <p style="color: red;">{{ error }}</p>
         {% endif %}
+
+        <p>If you already have an account, <a href="{{ url_for('login') }}">Login</a></p>
     </form>
 </body>
 </html>

@@ -20,7 +20,7 @@ class HabitTracker:
     
     #method to check in username and password match
     def checkLogin(self, username, password):
-        '''This checks to see if the username and password are both correct
+        '''Checks to see if the username and password are both correct
         Args:
             username: user's identification, must be string
             password: password associated with user, must be string
@@ -30,7 +30,7 @@ class HabitTracker:
         return ((self.login_data['username'] == username) & (self.login_data['password'] == password)).any()
 
     def check_today_entry(self):
-        '''Check if there is a current entry in the user's daily data for the current day.
+        '''Checks if there is a current entry in the user's daily data for the current day.
         
         Returns: if there is an entry will return the entry index, otherwise returns none
         '''
@@ -189,7 +189,7 @@ class HabitTracker:
         self.daily_data.to_csv(f"{self.username}_daily_data.csv", index=False)
              
     def check_all_tasks_completed(self, date_check):
-        '''Check if all the daily goals have been achieved.
+        '''Checks if all the daily goals have been achieved.
         
         Args: 
             date_check: the entry date to be checked, must be '%Y-%m-%d' string
@@ -399,9 +399,15 @@ def register():
                 else:
                     daily_data_df = pd.DataFrame(columns=['Date', 'Water','Water_oz','Exercise','Exercise2','Outside','Diet','Read','Picture','Day_completed','Streak_number','Water_Oz','E1_time','E1_type','E2_time','E2_type','Calories','Pages','Title'])
                 
-                daily_data_df.to_csv(user_daily_file, index=False)
+                daily_data_df.to_csv(f"{user_daily_file}", index=False)
+               
+                habit_tracker.daily_data = daily_data_df
+                habit_tracker.username=username
+                habit_tracker.streak = int(habit_tracker.login_data.loc[habit_tracker.login_data['username']== habit_tracker.username, 'streak'].values[0] )
+                habit_tracker.streak_date = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'streak_date'].values[0]
+                habit_tracker.setting_default = habit_tracker.login_data.loc[habit_tracker.login_data['username'] == habit_tracker.username, 'default_tracking'].values[0]
 
-                return redirect(url_for('login'))
+                return redirect(url_for('tracker_redirect'))
 
     return render_template('register.html', error=error)
 
