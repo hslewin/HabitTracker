@@ -28,6 +28,12 @@ Goals:
 There are two modes for tracking in the application. There is a simple checklist dashboard and an extended dashboard that allows for input of values associated with the various goals.
 The selection for the mode is only offered during the registration process.
 
+#### Default tracking with simple checkboxs
+<img src= https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_default.png alt="Default Tracker Page" width=75% height=auto>
+
+#### Extended tracking with expandable sections and data displays
+<img src= https://github.com/hslewin/HabitTracker/blob/main/documentation/HT_extended.png alt="Extended Tracker Page" width=75% height=auto>
+
 
 
 
