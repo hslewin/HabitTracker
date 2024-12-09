@@ -120,8 +120,7 @@ class HabitTracker:
         existing_entry = self.daily_data[self.daily_data['Date'] == self.today]
         
         #Add water ounce, check if meet the daily goal, if meet change checkbox to true
-        self.water_oz = water_oz
-        water_oz += water_oz_extra
+        water_oz = water_oz + water_oz_extra
         if water_oz >= 128:
             water_intake = True
         
@@ -136,10 +135,6 @@ class HabitTracker:
         #check if pages read meets daily goal, if meet change checkbox to true
         if pages >=10:
             read_pages = True
-        
-        #add calories in input to running total of calories,
-        self.cal +=calories
-        calories=self.cal
         
         if existing_entry.empty:
             # Create a new entry for today if it doesn't exist
@@ -503,6 +498,7 @@ def tracker_extended():
         
         water_oz_extra_str = request.form.get('Water_oz_extra', '0')
         water_oz_extra = int(water_oz_extra_str) if water_oz_extra_str.isdigit() else 0
+        habit_tracker.water_oz=water_oz + water_oz_extra
         
         exercise_completed = 'Exercise_completed' in request.form
         e1_time_str = request.form.get('E1_time', '0')
@@ -517,6 +513,7 @@ def tracker_extended():
         diet_followed = 'Diet_followed' in request.form
         calories_str = request.form.get('Calories', '0')
         calories = int(calories_str) if calories_str.isdigit() else 0
+        habit_tracker.cal= habit_tracker.cal + calories
         
         read_pages = 'Read_pages' in request.form
         title = request.form.get('Title', "")  
@@ -533,7 +530,7 @@ def tracker_extended():
                           read_pages, pages, title, 
                           picture_taken)
                               
-        return redirect(url_for('tracker_extended'))
+        return redirect(url_for('tracker_extended', cal_num = habit_tracker.cal, water_num= habit_tracker.water_oz))
     
     # Set default values if today_entry is empty
     if today_entry.empty:
@@ -561,21 +558,26 @@ def tracker_extended():
         
     #graphs to track data for displays on page, data over the course of the challenge
     water = px.line(habit_tracker.daily_data, x='Date', y='Water_oz', title='Water Intake Per Day')
+    water.update_layout(autosize=False,width=500, height=300, margin=dict(l=20, r=20, t=30, b=30),)
     water_oz_data = water.to_html(full_html=False)
     
     e1 = px.line(habit_tracker.daily_data, x='Date', y='E1_time', title='Outdoor Exercise Per Day')
+    e1.update_layout(autosize=False,width=500, height=300, margin=dict(l=20, r=20, t=30, b=30),)
     e1_time_data= e1.to_html(full_html=False)
     
     e2 = px.line(habit_tracker.daily_data, x='Date', y='E2_time', title='Second Exercise Per Day')
+    e2.update_layout(autosize=False,width=500, height=300, margin=dict(l=20, r=20, t=30, b=30),)
     e2_time_data= e2.to_html(full_html=False)
     
     cal = px.line(habit_tracker.daily_data, x='Date', y='Calories', title='Calories Per Day')
+    cal.update_layout(autosize=False,width=500, height=300, margin=dict(l=20, r=20, t=30, b=30),)
     calories_data= cal.to_html(full_html=False)
     
     pag = px.line(habit_tracker.daily_data, x='Date', y='Pages', title='Pages Read Per Day')
+    pag.update_layout(autosize=False,width=500, height=300, margin=dict(l=20, r=20, t=30, b=30),)
     pages_data = pag.to_html(full_html=False)
     
-    return render_template('tracker_extended.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz, water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calories_data = calories_data, cal_num = habit_tracker.cal, pages_data= pages_data)
+    return render_template('tracker_extended.html', daily_data = today_entry_data, streak = habit_tracker.streak, water_num = habit_tracker.water_oz , water_oz_data = water_oz_data, e1_time_data = e1_time_data, e2_time_data = e2_time_data, calories_data = calories_data, cal_num = habit_tracker.cal, pages_data= pages_data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

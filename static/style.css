@@ -222,10 +222,16 @@ input[type="submit"] {
 
 /* graphs styling*/
 .graph{
-  width: 100%;
-  max-width: 300px;
-  margin: 10 px auto;
   display: none;
+}
+
+.graphs-container{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* toggle button styling */

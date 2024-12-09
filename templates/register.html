@@ -16,20 +16,25 @@
 
     <!--registration form--> 
     <form method="POST" action="/register">
-        <label for="username">Username:</label>
+        <label for="username">Username:
         <input type="text" id="username" name="username" required>
+        </label>
         <br>
-        <label for="password">Password:</label>
+   
+        <label for="password">Password:
         <input type="password" id="password" name="password" required>
+        </label>
         <br>
-        <label for="confirm_password">Confirm Password:</label>
+        <label for="confirm_password">Confirm Password:
         <input type="password" id="confirm_password" name="confirm_password" required>
+        </label>
         <br>
-        <label for="default_tracking">Tracking Type:</label>
+        <label for="default_tracking">Tracking Type:
         <select id="default_tracking" name="default_tracking" required>
             <option value= True>Simple Checklist</option>
             <option value= False>Extended Tracking</option>
         </select>
+        </label>
         <br><br>
         <input type="submit" value="Register">
         <br>

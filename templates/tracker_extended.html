@@ -17,6 +17,7 @@
       let water_num= {{water_num}};
       let cal_num ={{cal_num}};
       const streak = {{streak}};
+      let currentlyOpenTask = null;
 
       //dailyData contants
       const dailyData = {
@@ -46,17 +47,28 @@
         const taskInfo = document.getElementById(taskId);
         const arrow = document.getElementById(arrowId);
         const graph = document.getElementById(graphId);
+
+        // Close the currently open task if it's not the same as the clicked one
+        if (currentlyOpenTask && currentlyOpenTask.taskId !== taskId) {
+          document.getElementById(currentlyOpenTask.taskId).style.display = 'none';
+          document.getElementById(currentlyOpenTask.arrowId).textContent = '▲';
+          document.getElementById(currentlyOpenTask.graphId).style.display = 'none';
+          currentlyOpenTask = null;
+        }
+      
+        // Toggle the clicked task
         if (taskInfo.style.display === 'none' || !taskInfo.style.display) {
           taskInfo.style.display = 'block';
           arrow.textContent = '▼'; // Down arrow
           graph.style.display = 'flex';
+          currentlyOpenTask = { taskId, arrowId, graphId };
         } else {
           taskInfo.style.display = 'none';
           arrow.textContent = '▲'; // Up arrow
           graph.style.display = 'none';
+          currentlyOpenTask = null;
         }
       }
-  
       // Update tracker grid for streaks
       function updateStreakTracker(streak) {
         for (let i = 1; i <= 75; i++) {
@@ -131,7 +143,7 @@
               <button type="button" class ="btn btn-add" onclick="addWater(8)">+ 8 oz</button>
               <button type="button" class ="btn btn-add" onclick="addWater(16)">+ 16 oz</button>
               <button type="button" class ="btn btn-add" onclick="addWater(24)">+ 24 oz</button>
-              <input type="hidden" id="Water_oz" name="Water_oz" value="{{ water_num }}">
+              <input type="hidden" id="Water_oz" name="Water_oz" value={{ water_num }}>
             </div><br>
             <p>Other:<input type="number" id="water_oz_extra" name="Water_oz_extra" value="{{ daily_data.Water_oz_extra }}"></p>
           </div>
@@ -175,7 +187,7 @@
               <button type="button" class ="btn btn-add" onclick="addCal(50)">+ 50 Cal</button>
               <button type="button" class ="btn btn-add" onclick="addCal(100)">+ 100 Cal</button>
               <button type="button" class ="btn btn-add" onclick="addCal(200)">+ 200 Cal</button>
-              <input type="hidden" id="Calories" name="Calories" value="{{ cal_num }}">
+              <input type="hidden" id="Calories" name="Calories" value={{ cal_num }}>
             </div><br>
           <p for="Calories">Calories:<input type="number" id="Calories" name="Calories" value ="{{ daily_data.Cal_extra }}"></p>
           </div>
@@ -232,29 +244,36 @@
       
 
         <!--graph for habits, toggle between each habit-->
+        <br>
+        <h2>Goal Progress</h2> <br>
+
+        <div class="graphs-container">
+
         <div id ="water_graph" class="graph">
-          <p>{{water_oz_data | safe}}</p>
+          {{water_oz_data | safe}}
         </div>
+        <br>
 
         <div id="e1_graph"  class="graph">
-          <h2>Graph</h2>
           {{e1_time_data | safe}}
         </div>
+        <br>
 
-        <div id="e2_graph" class="graph">
-          <h2>Graph</h2> 
+        <div id="e2_graph" class="graph"> 
           {{e2_time_data | safe}}
         </div>
+        <br>
 
         <div id="calories_graph" class="graph">
-          <h2>Graph</h2>
           {{calories_data | safe}}
         </div>
+        <br>
 
         <div id="pages_graph" class="graph">
-          <h2>Graph</h2>
           {{pages_data | safe}}
         </div>
+
+      </div>
        
 
     </div>
