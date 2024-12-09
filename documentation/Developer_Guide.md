@@ -118,5 +118,9 @@ None of the functions would be available to end users, The functions could be si
 - tracker_extended: pulls data from inputs and saves, creates graphs for page
   -- redirects to self, 'tracker_extended', with data pulled forward
 
-#### Possible Future 
+#### Possible Future Work
+- Customization: I would have liked to have a fully customizable checklist that is determined by the user. This would require a reworking of quite a bit of the code and some of the structure.
+- User settings: I would like to have a user settings page so that selections could be adjusted to meet the user's changing preferences
+- Better Security: I don't have experience in security so didn't implement any security and very minimal error catching
+- Better visuals: While the visuals are okay, there are many elements that are very rough and need finessing. Function was prioritized over form. 
 
