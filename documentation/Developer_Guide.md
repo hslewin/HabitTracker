@@ -118,6 +118,14 @@ None of the functions would be available to end users, The functions could be si
 - tracker_extended: pulls data from inputs and saves, creates graphs for page
   -- redirects to self, 'tracker_extended', with data pulled forward
 
+#### Known Issues
+- Minor
+  -- water and calories values are not being pulled through to the next redirect page properly
+  -- the graphs are not positioned correctly on the page
+  -- occationally the daily_data.csv file for a user will save without the username appended to the beginning
+- Major
+  -- current security around username and passwords
+
 #### Possible Future Work
 - Customization: I would have liked to have a fully customizable checklist that is determined by the user. This would require a reworking of quite a bit of the code and some of the structure.
 - User settings: I would like to have a user settings page so that selections could be adjusted to meet the user's changing preferences
