@@ -22,6 +22,7 @@ Goals:
   - the templates folder and all of the templates
   - the static folder and the syle.css
   - requirements.txt with all of the necessary modules and the versions
+    - run this command in the terminal: pip install --upgrade -r requirements.txt
 - If you want to have a demonstration of the application you can also download the additional CSV files
 
 ### Program options
