@@ -55,19 +55,19 @@ Goals:
 ##### Extended Tracker (extended tracking)
 1. Checkbox with expandable area for each of the goals
 - Drink 1 gallon (128 ounces) of water
-  --three buttons for added set amounts of water
-  --one input box for adding various amounts of water
+  - three buttons for added set amounts of water
+  - one input box for adding various amounts of water
 - Exercise 45 minutes outside
-  -- Input for type of exercise
-  -- Input for amount of time spent
+  - Input for type of exercise
+  - Input for amount of time spent
 - Exercise an additional 45 minutes
-  -- Input for type of exercise
-  -- Input for amount of time spent
+  - Input for type of exercise
+  - Input for amount of time spent
 - Follow a diet of your choosing, no alchol allowed, no cheat days
-  -- Input for number of Calories
+  - Input for number of Calories
 - Read 10 pages of a non-fiction book
-  -- Input for title of book
-  -- Input for number of pages read
+  - Input for title of book
+  - Input for number of pages read
 - Take a progress photo everyday (does not include expandable area)
 2. Submit data button, user will redirected back to this tracker with checkbox data retained/visualized
 3. Over challenge progreess and daily progress visuallizations on the right half of the page
@@ -95,36 +95,36 @@ None of the functions would be available to end users, The functions could be si
 - checkLogin: Checks to see if the username and password are both correct
 - check_today_entry: Check if there is a current entry in the user's daily data for the current day
 - track_habits: Saving data for the various goals of the "challenge", simple checklist,
-  -- functions used: check_all_tasks_completed, update_streak
+  - functions used: check_all_tasks_completed, update_streak
 - track_habits_extended: Saving data for the various goals of the "challenge", extended with extra data
-  -- functions used: check_all_tasks_completed, update_streak
+  - functions used: check_all_tasks_completed, update_streak
 - check_all_tasks_complete: Check if all the daily goals have been achieved.
 - update_streak: Updates the streak date and count 
-  -- functions used: check_all_tasks_complete, calulate_recent_streak
+  - functions used: check_all_tasks_complete, calulate_recent_streak
 - calculate_recent_streak: Calculate the number of consecutive previous days in which all tasks were completed
 ###### Flask pages
 - home:
-  -- redirects to 'login' 
+  - redirects to 'login' 
 - login: pulls data from imputs, checkLogin, added user data to the session
-  -- redirects to a 'tracker_redirect' 
+  - redirects to a 'tracker_redirect' 
 - logout: clears all user data from the session
-  -- redirects to 'login' page
+  - redirects to 'login' page
 - register: pulls data from inputs, sets up user data for the session
-  -- redirects to 'tracker_redirect'
+  - redirects to 'tracker_redirect'
 - tracker_redirect: determines which version of the tracker to redirect the user based on their version selection
-  -- redirects to either 'tracker_default' or 'tracker_extended'
+  - redirects to either 'tracker_default' or 'tracker_extended'
 - tracker_default: pulls data from inputs and saves
-  -- redirects to self, 'tracker_default', with data pulled forward
+  - redirects to self, 'tracker_default', with data pulled forward
 - tracker_extended: pulls data from inputs and saves, creates graphs for page
-  -- redirects to self, 'tracker_extended', with data pulled forward
+  - redirects to self, 'tracker_extended', with data pulled forward
 
 #### Known Issues
 - Minor
-  -- water and calories values are not being pulled through to the next redirect page properly
-  -- the graphs are not positioned correctly on the page
-  -- occationally the daily_data.csv file for a user will save without the username appended to the beginning
+  - water and calories values are not being pulled through to the next redirect page properly
+  - the graphs are not positioned correctly on the page
+  - occationally the daily_data.csv file for a user will save without the username appended to the beginning
 - Major
-  -- current security around username and passwords
+  - current security around username and passwords
 
 #### Possible Future Work
 - Customization: I would have liked to have a fully customizable checklist that is determined by the user. This would require a reworking of quite a bit of the code and some of the structure.
